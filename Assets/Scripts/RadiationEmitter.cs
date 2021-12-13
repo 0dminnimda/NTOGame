@@ -20,6 +20,7 @@ public class RadiationEmitter : MonoBehaviour
     float debugMaxDistance = 10;
     List<Vector3> debugDirections = new List<Vector3>();
     Vector3 debugOrigin = new Vector3();
+    List<Vector3> debugHitPoints = new List<Vector3>();
 
     void Start()
     {
@@ -28,10 +29,10 @@ public class RadiationEmitter : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        ShootAllRays();
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
-            ShootAllRays();
-        }
+        }*/
     }
 
     void ShootAllRays()
@@ -42,12 +43,13 @@ public class RadiationEmitter : MonoBehaviour
         var rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
         var direction = Vector3.right;
 
-        Debug.Log(numOfTurns);
+        // Debug.Log(numOfTurns);
 
         // debug
         debugMaxDistance = maxDistance;
         debugOrigin = origin.position;
         debugDirections.Clear();
+        debugHitPoints.Clear();
         // debug
 
         for (int i = 0; i < numOfTurns; i++)
@@ -61,13 +63,16 @@ public class RadiationEmitter : MonoBehaviour
     void ShootOneRay(Vector3 direction)
     {
         var hits = Physics.RaycastAll(origin.position, direction, maxDistance)
-            .OrderBy(v => origin.position.ManhattanDist(v.transform.position));
+            .OrderBy(v => origin.position.ManhattanDist(v.point));
 
         var currentRadiationLevel = basicRadiationLevel;
 
         foreach (var hit in hits)
         {
-            // Debug.Log(hit.transform.gameObject.name);
+            // debug
+            debugHitPoints.Add(hit.point);
+            // debug
+
             var wall = hit.transform.gameObject.GetComponent<Wall>();
             if (wall != null)
             {
@@ -95,6 +100,11 @@ public class RadiationEmitter : MonoBehaviour
         foreach (var vec in debugDirections)
         {
             Gizmos.DrawLine(debugOrigin, debugOrigin + vec.normalized * debugMaxDistance);
+        }
+
+        foreach (var vec in debugHitPoints)
+        {
+            Gizmos.DrawSphere(vec, 0.05f);
         }
     }
 }
