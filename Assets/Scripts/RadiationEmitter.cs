@@ -21,13 +21,11 @@ public class RadiationEmitter : MonoBehaviour
     List<Vector3> debugDirections = new List<Vector3>();
     Vector3 debugOrigin = new Vector3();
 
-    // Start is called before the first frame update
     void Start()
     {
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -38,12 +36,10 @@ public class RadiationEmitter : MonoBehaviour
 
     void ShootAllRays()
     {
-        var radius = radiusOfTarget * 1.75f;
-        var angle = Mathf.Acos(1 - (radius * radius) / (2 * maxDistance * maxDistance));
+        var angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
         int numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
 
-
-        var rotation = Quaternion.Euler(0, 360 / numOfTurns, 0);
+        var rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
         var direction = Vector3.right;
 
         Debug.Log(numOfTurns);
@@ -71,18 +67,22 @@ public class RadiationEmitter : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            Debug.Log(hit.transform.gameObject.name);
-            /*Renderer rend = hit.transform.GetComponent<Renderer>();
-
-            if (rend)
+            // Debug.Log(hit.transform.gameObject.name);
+            var wall = hit.transform.gameObject.GetComponent<Wall>();
+            if (wall != null)
             {
-                // Change the material of all hit colliders
-                // to use a transparent shader.
-                rend.material.shader = Shader.Find("Transparent/Diffuse");
-                Color tempColor = rend.material.color;
-                tempColor.a = 0.3F;
-                rend.material.color = tempColor;
-            }*/
+                currentRadiationLevel -= wall.radiationDecrement;
+                continue;
+            }
+
+            var affected = hit.transform.gameObject.GetComponent<RadiationAffected>();
+            if (affected != null)
+            {
+                affected.AffectByRadiation(currentRadiationLevel);
+                continue;
+            }
+
+            Debug.LogError("Should not be reachable, check your layer mask");
         }
 
         // debug
@@ -97,10 +97,4 @@ public class RadiationEmitter : MonoBehaviour
             Gizmos.DrawLine(debugOrigin, debugOrigin + vec.normalized * debugMaxDistance);
         }
     }
-
-    /*RaycastHit[] GetRaycasts(Vector3 direction)
-    {
-        return Physics.RaycastAll(origin.position, direction, maxDistance)
-            .OrderBy(v => origin.position.ManhattanDist(v.transform.position));
-    }*/
 }
