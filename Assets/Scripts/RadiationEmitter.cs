@@ -22,12 +22,12 @@ public class RadiationEmitter : MonoBehaviour
     Vector3 debugOrigin = new Vector3();
     List<Vector3> debugHitPoints = new List<Vector3>();
 
-    void Start()
+    private void Start()
     {
 
     }
 
-    void Update()
+    private void Update()
     {
         ShootAllRays();
         /*if (Input.GetKeyDown(KeyCode.Space))
@@ -35,13 +35,13 @@ public class RadiationEmitter : MonoBehaviour
         }*/
     }
 
-    void ShootAllRays()
+    private void ShootAllRays()
     {
-        var angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
+        float angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
         int numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
 
-        var rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
-        var direction = Vector3.right;
+        float rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
+        Vector3 direction = Vector3.right;
 
         // Debug.Log(numOfTurns);
 
@@ -60,12 +60,12 @@ public class RadiationEmitter : MonoBehaviour
 
     }
 
-    void ShootOneRay(Vector3 direction)
+    private void ShootOneRay(Vector3 direction)
     {
         var hits = Physics.RaycastAll(origin.position, direction, maxDistance)
             .OrderBy(v => origin.position.ManhattanDist(v.point));
 
-        var currentRadiationLevel = basicRadiationLevel;
+        float currentRadiationLevel = basicRadiationLevel;
 
         foreach (var hit in hits)
         {
@@ -73,14 +73,14 @@ public class RadiationEmitter : MonoBehaviour
             debugHitPoints.Add(hit.point);
             // debug
 
-            var wall = hit.transform.gameObject.GetComponent<Wall>();
+            Wall wall = hit.transform.gameObject.GetComponent<Wall>();
             if (wall != null)
             {
                 currentRadiationLevel -= wall.radiationDecrement;
                 continue;
             }
 
-            var affected = hit.transform.gameObject.GetComponent<RadiationAffected>();
+            RadiationAffected affected = hit.transform.gameObject.GetComponent<RadiationAffected>();
             if (affected != null)
             {
                 affected.AffectByRadiation(currentRadiationLevel);
@@ -95,14 +95,14 @@ public class RadiationEmitter : MonoBehaviour
         // debug
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-        foreach (var vec in debugDirections)
+        foreach (Vector3 vec in debugDirections)
         {
             Gizmos.DrawLine(debugOrigin, debugOrigin + vec.normalized * debugMaxDistance);
         }
 
-        foreach (var vec in debugHitPoints)
+        foreach (Vector3 vec in debugHitPoints)
         {
             Gizmos.DrawSphere(vec, 0.05f);
         }
