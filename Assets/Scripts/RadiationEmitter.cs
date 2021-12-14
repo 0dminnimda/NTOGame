@@ -38,10 +38,10 @@ public class RadiationEmitter : MonoBehaviour
     private void ShootAllRays()
     {
         float angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
-        int numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
+        var numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
 
-        float rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
-        Vector3 direction = Vector3.right;
+        Quaternion rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
+        var direction = Vector3.right;
 
         // Debug.Log(numOfTurns);
 
@@ -52,7 +52,7 @@ public class RadiationEmitter : MonoBehaviour
         debugHitPoints.Clear();
         // debug
 
-        for (int i = 0; i < numOfTurns; i++)
+        for (var i = 0; i < numOfTurns; i++)
         {
             ShootOneRay(direction);
             direction = rotation * direction;
@@ -62,12 +62,11 @@ public class RadiationEmitter : MonoBehaviour
 
     private void ShootOneRay(Vector3 direction)
     {
-        var hits = Physics.RaycastAll(origin.position, direction, maxDistance)
-            .OrderBy(v => origin.position.ManhattanDist(v.point));
+        RaycastHit[] hits = Physics.RaycastAll(origin.position, direction, maxDistance);
 
         float currentRadiationLevel = basicRadiationLevel;
 
-        foreach (var hit in hits)
+        foreach (RaycastHit hit in hits.OrderBy(v => origin.position.ManhattanDist(v.point)))
         {
             // debug
             debugHitPoints.Add(hit.point);
