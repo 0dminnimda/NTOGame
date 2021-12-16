@@ -1,0 +1,70 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<float4> result;
+
+StructuredBuffer<float2> points;
+
+float resolution;
+float scalar;
+
+float low;
+float high;
+
+float4 red;
+float4 defaultColor;
+
+// float resolution;
+// float v;
+
+
+float sqrDistance(int index, float2 pixelPosition)
+{
+    float2 v = pixelPosition - points[index];
+    return v.x * v.x + v.y * v.y;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // float x = id.x - resolution / 2f + 0.5f;
+    // x /= scalar;
+    // float y = id.y - resolution / 2f + 0.5f;
+    // y /= scalar;
+
+    float4 color = defaultColor;
+    float2 pixelPosition = id - resolution / 2 + 0.5;
+    pixelPosition /= scalar;
+
+    uint len, _;
+    points.GetDimensions(len, _);
+    if (len > 0)
+    {
+        float minimum = sqrDistance(0, pixelPosition);
+        for (uint i = 1; i < len; i++)
+        {
+            minimum = min(sqrDistance(i, pixelPosition), minimum);
+        }
+        if (low <= minimum && minimum <= high)
+            color = red;
+    }
+
+    /*
+    var min = points.Select(x => (coord - x).sqrMagnitude).Min();
+
+    //Debug.LogFormat("{0}, {1}", coord, min);
+    if (low <= min && min <= high)
+    {
+        color = red;
+    }
+    else
+        color = defaultColor;
+    */
+
+    result[id.xy] = color;
+
+    //result[id.xy] = float4(pixelPosition.x, (id.x + id.y) / resolution / 2, pixelPosition.y, 0.0);
+    //result[id.xy] = float4(dot(float2(id.x, id.y), float2(id.y*2, id.x)), (id.x + id.y) / resolution / 2, 0.0, 0.0);
+}
