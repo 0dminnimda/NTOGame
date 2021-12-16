@@ -22,6 +22,9 @@ public class RadiationEmitter : MonoBehaviour
     Vector3 debugOrigin = new Vector3();
     List<Vector3> debugHitPoints = new List<Vector3>();
 
+    public List<(Vector2, Vector2[])> data = new List<(Vector2, Vector2[])>();
+    public bool dataHasChanged;
+
     private void Start()
     {
 
@@ -29,19 +32,26 @@ public class RadiationEmitter : MonoBehaviour
 
     private void Update()
     {
+        dataHasChanged = false;
+
         ShootAllRays();
         /*if (Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log("");
+            ShootAllRays();
         }*/
     }
 
     private void ShootAllRays()
     {
+        dataHasChanged = true;
+        data.Clear();
+
         float angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
         var numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
 
-        Quaternion rotation = Quaternion.Euler(0, 360f / numOfTurns, 0);
-        var direction = Vector3.right;
+        Quaternion rotation = Quaternion.Euler(0, 0, 360f / numOfTurns);
+        var direction = Vector2.right;
 
         // Debug.Log(numOfTurns);
 
@@ -60,17 +70,22 @@ public class RadiationEmitter : MonoBehaviour
 
     }
 
-    private void ShootOneRay(Vector3 direction)
+    private void ShootOneRay(Vector2 direction2D)
     {
+        Vector3 direction = transform.InverseTransformPoint(direction2D);
+
         RaycastHit[] hits = Physics.RaycastAll(origin.position, direction, maxDistance);
 
         float currentRadiationLevel = basicRadiationLevel;
 
+        List<Vector2> dataItem = new List<Vector2>();
         foreach (RaycastHit hit in hits.OrderBy(v => origin.position.ManhattanDist(v.point)))
         {
             // debug
             debugHitPoints.Add(hit.point);
             // debug
+
+            dataItem.Add(new Vector2(hit.point.x, hit.point.z));
 
             Wall wall = hit.transform.gameObject.GetComponent<Wall>();
             if (wall != null)
@@ -88,6 +103,8 @@ public class RadiationEmitter : MonoBehaviour
 
             Debug.LogError("Should not be reachable, check your layer mask");
         }
+
+        data.Add((direction2D, dataItem.ToArray()));
 
         // debug
         debugDirections.Add(direction);
