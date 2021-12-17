@@ -2,6 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static Consts;
+using System;
+
+public struct RayData
+{
+    public Vector2 v;
+    public int ptsUsed;
+
+    public RayData(Vector2 v, int l)
+    {
+        this.v = v;
+        ptsUsed = Math.Min(l, LEN);
+    }
+};
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class RadiationVisualization : MonoBehaviour
@@ -54,8 +68,6 @@ public class RadiationVisualization : MonoBehaviour
         rt.enableRandomWrite = true;
         rt.Create();
 
-        //tex = new Texture2D(resolution, resolution);
-
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.mainTexture = rt;
 
@@ -67,11 +79,14 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetFloat("low", low);
         cum.SetFloat("high", high);
 
-        cum.SetVector("red", (Color)filling);
+        var f = (Color)filling;
+
         cum.SetVector("defaultColor", (Color)defaultColor);
         cum.SetVector("defaultColor", (Color)transparent);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
+
+        //tex = new Texture2D(resolution, resolution);
 
         /*mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         sr.sprite = mySprite;*/
@@ -88,10 +103,15 @@ public class RadiationVisualization : MonoBehaviour
     void Redraw()
     {
         // RGBA32 texture format data layout exactly matches Color32 struct
-        //var data = tex.GetRawTextureData<Color32>();
+        // var data = tex.GetRawTextureData<Color32>();
 
-        ComputeBuffer pointBuffer = new ComputeBuffer(re.data.Count, sizeof(float) * 2);
-        pointBuffer.SetData(re.data);
+        ComputeBuffer rayBuffer = new ComputeBuffer(re.data.Count, sizeof(float) * 2 + sizeof(int));
+        rayBuffer.SetData(re.data);
+        cum.SetBuffer(0, "rays", rayBuffer);
+
+        ComputeBuffer pointBuffer = new ComputeBuffer(re.pointData.Count, sizeof(float) * 2);
+        pointBuffer.SetData(re.pointData);
+        cum.SetBuffer(0, "points", pointBuffer);
 
         cum.SetFloat("scalar", scalar);
 
@@ -103,12 +123,11 @@ public class RadiationVisualization : MonoBehaviour
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
 
-        cum.SetBuffer(0, "points", pointBuffer);
-
         cum.Dispatch(0, rt.width / 8, rt.height / 8, 1);
-        pointBuffer.Dispose();
+        rayBuffer.Release();
+        pointBuffer.Release();
 
         // upload to the GPU
-        //rt.Apply();
+        //tex.Apply();
     }
 }
