@@ -29,11 +29,6 @@ float sqrDistance(int index, float2 pixelPosition)
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    // float x = id.x - resolution / 2f + 0.5f;
-    // x /= scalar;
-    // float y = id.y - resolution / 2f + 0.5f;
-    // y /= scalar;
-
     float4 color = defaultColor;
     float2 pixelPosition = id - resolution / 2 + 0.5;
     pixelPosition /= scalar;
@@ -51,20 +46,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
             color = red;
     }
 
-    /*
-    var min = points.Select(x => (coord - x).sqrMagnitude).Min();
-
-    //Debug.LogFormat("{0}, {1}", coord, min);
-    if (low <= min && min <= high)
-    {
-        color = red;
-    }
-    else
-        color = defaultColor;
-    */
-
     result[id.xy] = color;
-
-    //result[id.xy] = float4(pixelPosition.x, (id.x + id.y) / resolution / 2, pixelPosition.y, 0.0);
-    //result[id.xy] = float4(dot(float2(id.x, id.y), float2(id.y*2, id.x)), (id.x + id.y) / resolution / 2, 0.0, 0.0);
 }
