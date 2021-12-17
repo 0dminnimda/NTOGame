@@ -15,14 +15,13 @@ float high;
 
 float4 red;
 float4 defaultColor;
+float4 transparent;
 
-// float resolution;
-// float v;
+float maxDistance;
 
-
-float sqrDistance(int index, float2 pixelPosition)
+float sqrDistance(float2 a, float2 b)
 {
-    float2 v = pixelPosition - points[index];
+    float2 v = a - b;
     return v.x * v.x + v.y * v.y;
 }
 
@@ -33,14 +32,20 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float2 pixelPosition = id - resolution / 2 + 0.5;
     pixelPosition /= scalar;
 
+    if (sqrDistance(pixelPosition, float2(0.0, 0.0)) > maxDistance)
+    {
+        result[id.xy] = transparent;
+        return;
+    }
+
     uint len, _;
     points.GetDimensions(len, _);
     if (len > 0)
     {
-        float minimum = sqrDistance(0, pixelPosition);
+        float minimum = sqrDistance(pixelPosition, points[0]);
         for (uint i = 1; i < len; i++)
         {
-            minimum = min(sqrDistance(i, pixelPosition), minimum);
+            minimum = min(sqrDistance(pixelPosition, points[i]), minimum);
         }
         if (low <= minimum && minimum <= high)
             color = red;
