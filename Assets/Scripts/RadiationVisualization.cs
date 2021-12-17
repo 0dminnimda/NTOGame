@@ -7,14 +7,19 @@ using System.Linq;
 public class RadiationVisualization : MonoBehaviour
 {
     SpriteRenderer sr;
-    Sprite mySprite;
+    //Sprite mySprite;
+    //Texture2D tex;
 
     [SerializeField]
     RadiationEmitter re;
 
     [SerializeField]
+    ComputeShader cum;
+
+    [SerializeField]
     int resolution;
-    Texture2D tex;
+    [SerializeField]
+    float scalar;
 
     [SerializeField]
     float low;
@@ -22,7 +27,13 @@ public class RadiationVisualization : MonoBehaviour
     float high;
 
     [SerializeField]
-    float scalar = 10f;
+    Color32 filling = new Color32(255, 0, 0, 255);
+    [SerializeField]
+    Color32 defaultColor = new Color32(255, 255, 255, 255);
+    [SerializeField]
+    Color32 transparent = new Color32(0, 0, 0, 0);
+
+    RenderTexture rt;
 
     void Awake()
     {
@@ -31,12 +42,39 @@ public class RadiationVisualization : MonoBehaviour
 
     void Start()
     {
-        tex = new Texture2D(resolution, resolution);
-        mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-        sr.sprite = mySprite;
+        Vector3 newVal = transform.localScale;
+        newVal.x = re.maxDistance * 2;
+        newVal.y = re.maxDistance * 2;
+        transform.localScale = newVal;
 
-        /*Renderer renderer = GetComponent<Renderer>();
-        renderer.material.mainTexture = tex;*/
+        scalar = resolution / re.maxDistance / 2;
+
+        // shader setup
+        rt = new RenderTexture(resolution, resolution, 32);
+        rt.enableRandomWrite = true;
+        rt.Create();
+
+        //tex = new Texture2D(resolution, resolution);
+
+        Renderer renderer = GetComponent<Renderer>();
+        renderer.material.mainTexture = rt;
+
+        cum.SetTexture(0, "result", rt);
+
+        cum.SetFloat("resolution", resolution);
+        cum.SetFloat("scalar", scalar);
+
+        cum.SetFloat("low", low);
+        cum.SetFloat("high", high);
+
+        cum.SetVector("red", (Color)filling);
+        cum.SetVector("defaultColor", (Color)defaultColor);
+        cum.SetVector("defaultColor", (Color)transparent);
+
+        cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
+
+        /*mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+        sr.sprite = mySprite;*/
     }
 
     void Update()
@@ -49,48 +87,28 @@ public class RadiationVisualization : MonoBehaviour
 
     void Redraw()
     {
-        List<Vector2> points = new List<Vector2>();
-
-        foreach ((Vector2, Vector2[]) item in re.data)
-        {
-            points.AddRange(item.Item2);
-        }
-
         // RGBA32 texture format data layout exactly matches Color32 struct
-        var data = tex.GetRawTextureData<Color32>();
+        //var data = tex.GetRawTextureData<Color32>();
 
-        // fill texture data with a simple pattern
-        var red = new Color32(255, 0, 0, 255);
-        var defaultColor = new Color32(255, 255, 255, 255);
-        Color32 color;
+        ComputeBuffer pointBuffer = new ComputeBuffer(re.data.Count, sizeof(float) * 2);
+        pointBuffer.SetData(re.data);
 
-        int index = 0;
-        var coord = new Vector2();
-        for (int y = 0; y < resolution; y++)
-        {
-            coord.y = y - resolution / 2f + 0.5f;
-            coord.y /= scalar;
+        cum.SetFloat("scalar", scalar);
 
-            for (int x = 0; x < resolution; x++)
-            {
-                coord.x = x - resolution / 2f + 0.5f;
-                coord.x /= scalar;
+        cum.SetFloat("low", low);
+        cum.SetFloat("high", high);
 
-                var min = points.Select(x => (coord - x).sqrMagnitude).Min();
+        cum.SetVector("red", (Color)filling);
+        cum.SetVector("defaultColor", (Color)defaultColor);
 
-                //Debug.LogFormat("{0}, {1}", coord, min);
-                if (low <= min && min <= high)
-                {
-                    color = red;
-                }
-                else
-                    color = defaultColor;
+        cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
 
-                data[index++] = color;
-            }
-        }
+        cum.SetBuffer(0, "points", pointBuffer);
+
+        cum.Dispatch(0, rt.width / 8, rt.height / 8, 1);
+        pointBuffer.Dispose();
 
         // upload to the GPU
-        tex.Apply();
+        //rt.Apply();
     }
 }
