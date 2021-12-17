@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static Extensions;
+using static Consts;
 
 public class RadiationEmitter : MonoBehaviour
 {
@@ -22,8 +23,8 @@ public class RadiationEmitter : MonoBehaviour
     Vector3 debugOrigin = new Vector3();
     List<Vector3> debugHitPoints = new List<Vector3>();
 
-    //public List<(Vector2, Vector2[])> data = new List<(Vector2, Vector2[])>();
-    public List<Vector2> data;
+    public List<RayData> data = new List<RayData>();
+    public List<Vector2> pointData = new List<Vector2>();
     public bool dataHasChanged;
 
     private void Start()
@@ -64,6 +65,7 @@ public class RadiationEmitter : MonoBehaviour
     {
         dataHasChanged = true;
         data.Clear();
+        pointData.Clear();
 
         float angle = Mathf.Acos(1 - (radiusOfTarget * radiusOfTarget) / (2 * maxDistance * maxDistance));
         var numOfTurns = (int)Mathf.Ceil(2 * Mathf.PI / angle);
@@ -96,15 +98,15 @@ public class RadiationEmitter : MonoBehaviour
 
         float currentRadiationLevel = basicRadiationLevel;
 
-        //List<Vector2> dataItem = new List<Vector2>();
+        List<Vector2> dataItem = new List<Vector2>();
         foreach (RaycastHit hit in hits.OrderBy(v => origin.position.ManhattanDist(v.point)))
         {
             // debug
             debugHitPoints.Add(hit.point);
             // debug
 
-            //dataItem.Add(new Vector2(hit.point.x, hit.point.z));
-            data.Add(new Vector2(hit.point.x, hit.point.z));
+            dataItem.Add(new Vector2(hit.point.x, hit.point.z));
+            //data.Add(new Vector2(hit.point.x, hit.point.z));
 
             Wall wall = hit.transform.gameObject.GetComponent<Wall>();
             if (wall != null)
@@ -123,7 +125,14 @@ public class RadiationEmitter : MonoBehaviour
             Debug.LogError("Should not be reachable, check your layer mask");
         }
 
-        //data.Add((direction2D, dataItem.ToArray()));
+        data.Add(new RayData(direction2D, dataItem.Count));
+        int used = data[data.Count - 1].ptsUsed;
+
+        for (var i = 0; i < used; i++)
+            pointData.Add(dataItem[i]);
+
+        for (var i = used; i < LEN; i++)
+            pointData.Add(new Vector2());
 
         // debug
         debugDirections.Add(direction);
