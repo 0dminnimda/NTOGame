@@ -59,7 +59,6 @@ int binSearch(float2 T)
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
-    float4 color = defaultColor;
     // get pixelPosition
     float2 pixelPosition = id - resolution / 2 + 0.5;
     pixelPosition /= scalar;
@@ -72,20 +71,47 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         return;
     }
 
-    uint len, _;
-    points.GetDimensions(len, _);
-    if (len > 0)
-    {
-        float minimum = maxDistance;
-        for (uint i = 0; i < len; i++)
-        {
-            if (all(points[i] != 0.0))
-                minimum = min(sqrDistance(pixelPosition, points[i]), minimum);
-        }
-        if (low <= minimum && minimum <= high)
-            color = red;
-    }
+    // uint pointsLen, raysLen, _;
+    // points.GetDimensions(pointsLen, _);
+    // rays.GetDimensions(raysLen, _);
 
-    color.w = 1 - pixelDistance / maxDistance;
+    // float minimum = maxDistance * 2;
+    // uint i;
+
+    // // closest point
+    // for (i = 0; i < pointsLen; i++)
+    // {
+    //     if (all(points[i] != 0.0))
+    //         minimum = min(sqrDistance(pixelPosition, points[i]), minimum);
+    // }
+
+    // // closest vector
+    // for (i = 0; i < raysLen; i++)
+    // {
+    //     minimum = min(sqrDistance(pixelPosition, rays[i].v), minimum);
+    // }
+
+    // threshold
+    float4 color = defaultColor;
+
+    // uint n,  _;
+    // rays.GetDimensions(n, _);
+
+    // float2 ray = rays[binSearch(pixelPosition)].v;
+    // color.x = (dot(normalize(ray), normalize(pixelPosition)) + 1) / 2;
+
+    // color.x = binSearch(pixelPosition) / (n - 1);
+    int m = binSearch(pixelPosition);
+    float2 v = (rays[m].v + rays[m+1].v) / 2;
+    color.x = (cross(float3(v.x, v.y, 0.0), float3(pixelPosition.x, pixelPosition.y, 0.0)).z > 0);
+    //(dot(normalize(rays[0].v), normalize(pixelPosition)) + 1) / 2;
+
+    // if (low <= minimum && minimum <= high)
+    //     color = red;
+    // else
+    //     color = defaultColor;
+
+    // farther the point less alpha channel
+    //color.w = 1 - pixelDistance / maxDistance;
     result[id.xy] = color;
 }
