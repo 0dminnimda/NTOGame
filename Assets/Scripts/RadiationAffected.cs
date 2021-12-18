@@ -18,6 +18,6 @@ public class RadiationAffected : MonoBehaviour
 
     public void AffectByRadiation(float radiationLevel)
     {
-        Debug.LogFormat("SUPASUS, Affected by radiation with level of {0}", radiationLevel);
+        // Debug.LogFormat("SUPASUS, Affected by radiation with level of {0}", radiationLevel);
     }
 }
