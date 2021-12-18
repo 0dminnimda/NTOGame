@@ -25,7 +25,6 @@ float4 defaultColor;
 float4 transparent;
 
 float maxDistance;
-//int step;
 
 float sqrDistance(float2 a, float2 b)
 {
@@ -41,9 +40,8 @@ int binSearch(float2 T)
     uint m;
     uint L = 0;
     uint R = n - 1;
-    // uint cstep = 0;
 
-    while (L < R + 1) // && cstep < step
+    while (L < R + 1)
     {
         m = floor((L + R) / 2);
         float2 v = rays[m].v;
@@ -51,7 +49,6 @@ int binSearch(float2 T)
             L = m + 1;
         else
             R = m - 1;
-        // cstep++;
     }
     return L - 1;
 }
