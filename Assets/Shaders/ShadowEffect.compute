@@ -5,6 +5,7 @@
 // with cs.SetTexture
 RWTexture2D<float4> result;
 
+#define LEN 4
 struct Ray
 {
     float2 v;
@@ -12,7 +13,14 @@ struct Ray
 };
 
 StructuredBuffer<Ray> rays;
-StructuredBuffer<float2> points;
+
+struct Point
+{
+    float2 v;
+    float radiationLvl;
+};
+
+StructuredBuffer<Point> points;
 
 float resolution;
 float scalar;
@@ -20,11 +28,13 @@ float scalar;
 float low;
 float high;
 
-float4 red;
+float4 filling;
 float4 defaultColor;
 float4 transparent;
 
 float maxDistance;
+#define initRadLvl 10
+#define decrease 1
 
 float sqrDistance(float2 a, float2 b)
 {
@@ -36,6 +46,8 @@ int binSearch(float2 T)
 {
     uint n,  _;
     rays.GetDimensions(n, _);
+
+    T.y *= -1; // smell code so this will work :)
 
     uint m;
     uint L = 0;
@@ -68,47 +80,47 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         return;
     }
 
-    // uint pointsLen, raysLen, _;
-    // points.GetDimensions(pointsLen, _);
-    // rays.GetDimensions(raysLen, _);
-
-    // float minimum = maxDistance * 2;
-    // uint i;
-
-    // // closest point
-    // for (i = 0; i < pointsLen; i++)
-    // {
-    //     if (all(points[i] != 0.0))
-    //         minimum = min(sqrDistance(pixelPosition, points[i]), minimum);
-    // }
-
-    // // closest vector
-    // for (i = 0; i < raysLen; i++)
-    // {
-    //     minimum = min(sqrDistance(pixelPosition, rays[i].v), minimum);
-    // }
+    //uint radLvl = initRadLvl;
 
     // threshold
     float4 color = defaultColor;
 
-    // uint n,  _;
-    // rays.GetDimensions(n, _);
+    int rayInd = binSearch(pixelPosition);
+    // float points1[LEN] = {
+    //     rays[rayInd*LEN + 0],
+    //     rays[rayInd*LEN + 1],
+    //     rays[rayInd*LEN + 2],
+    //     rays[rayInd*LEN + 3],
+    // }
 
-    // float2 ray = rays[binSearch(pixelPosition)].v;
-    // color.x = (dot(normalize(ray), normalize(pixelPosition)) + 1) / 2;
+    // float points1[LEN] = {
+    //     rays[(rayInd + 1)*LEN + 0],
+    //     rays[(rayInd + 1)*LEN + 1],
+    //     rays[(rayInd + 1)*LEN + 2],
+    //     rays[(rayInd + 1)*LEN + 3],
+    // }
 
-    // color.x = binSearch(pixelPosition) / (n - 1);
-    int m = binSearch(pixelPosition);
-    float2 v = (rays[m].v + rays[m+1].v) / 2;
-    color.x = (cross(float3(v.x, v.y, 0.0), float3(pixelPosition.x, pixelPosition.y, 0.0)).z > 0);
-    //(dot(normalize(rays[0].v), normalize(pixelPosition)) + 1) / 2;
+    Ray a = rays[rayInd];
+    Ray b = rays[rayInd + 1];
 
-    // if (low <= minimum && minimum <= high)
-    //     color = red;
-    // else
-    //     color = defaultColor;
+    if (a.ptsUsed == 0 && b.ptsUsed == 0)
+    {
+        // no intersections, pass
+    }
+    else if (a.ptsUsed == 0 || b.ptsUsed == 0)
+    {
+        // one ray have no intersections, another - more than 0
+
+        color = (filling + defaultColor) / 2;
+    }
+    else
+    {
+        // both rays have intersections
+
+        color = filling;
+    }
 
     // farther the point less alpha channel
-    //color.w = 1 - pixelDistance / maxDistance;
+    color.w = 1 - pixelDistance / maxDistance;
     result[id.xy] = color;
 }
