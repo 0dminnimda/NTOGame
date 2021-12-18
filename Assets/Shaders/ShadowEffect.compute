@@ -25,6 +25,7 @@ float4 defaultColor;
 float4 transparent;
 
 float maxDistance;
+//int step;
 
 float sqrDistance(float2 a, float2 b)
 {
@@ -32,13 +33,38 @@ float sqrDistance(float2 a, float2 b)
     return v.x * v.x + v.y * v.y;
 }
 
+int binSearch(float2 T)
+{
+    uint n,  _;
+    rays.GetDimensions(n, _);
+
+    uint m;
+    uint L = 0;
+    uint R = n - 1;
+    // uint cstep = 0;
+
+    while (L < R + 1) // && cstep < step
+    {
+        m = floor((L + R) / 2);
+        float2 v = rays[m].v;
+        if (cross(float3(v.x, v.y, 0.0), float3(T.x, T.y, 0.0)).z > 0)
+            L = m + 1;
+        else
+            R = m - 1;
+        // cstep++;
+    }
+    return L - 1;
+}
+
 [numthreads(8,8,1)]
 void CSMain (uint3 id : SV_DispatchThreadID)
 {
     float4 color = defaultColor;
+    // get pixelPosition
     float2 pixelPosition = id - resolution / 2 + 0.5;
     pixelPosition /= scalar;
 
+    // circle borders
     float pixelDistance = sqrDistance(pixelPosition, float2(0.0, 0.0));
     if (pixelDistance > maxDistance)
     {
