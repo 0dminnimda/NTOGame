@@ -17,6 +17,18 @@ public struct RayData
     }
 };
 
+public struct Point
+{
+    public Vector2 v;
+    public float radiationLvl;
+
+    public Point(Vector2 v, float radiationLvl)
+    {
+        this.v = v;
+        this.radiationLvl = radiationLvl;
+    }
+};
+
 [RequireComponent(typeof(SpriteRenderer))]
 public class RadiationVisualization : MonoBehaviour
 {
@@ -79,8 +91,6 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetFloat("low", low);
         cum.SetFloat("high", high);
 
-        var f = (Color)filling;
-
         cum.SetVector("defaultColor", (Color)defaultColor);
         cum.SetVector("defaultColor", (Color)transparent);
 
@@ -109,7 +119,7 @@ public class RadiationVisualization : MonoBehaviour
         rayBuffer.SetData(re.data);
         cum.SetBuffer(0, "rays", rayBuffer);
 
-        ComputeBuffer pointBuffer = new ComputeBuffer(re.pointData.Count, sizeof(float) * 2);
+        ComputeBuffer pointBuffer = new ComputeBuffer(re.pointData.Count, sizeof(float) * (2 + 1));
         pointBuffer.SetData(re.pointData);
         cum.SetBuffer(0, "points", pointBuffer);
 
@@ -118,7 +128,7 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetFloat("low", low);
         cum.SetFloat("high", high);
 
-        cum.SetVector("red", (Color)filling);
+        cum.SetVector("filling", (Color)filling);
         cum.SetVector("defaultColor", (Color)defaultColor);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);

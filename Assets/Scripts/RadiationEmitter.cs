@@ -24,7 +24,7 @@ public class RadiationEmitter : MonoBehaviour
     List<Vector3> debugHitPoints = new List<Vector3>();
 
     public List<RayData> data = new List<RayData>();
-    public List<Vector2> pointData = new List<Vector2>();
+    public List<Point> pointData = new List<Point>();
     public bool dataHasChanged;
 
     private void Start()
@@ -104,31 +104,34 @@ public class RadiationEmitter : MonoBehaviour
 
         float currentRadiationLevel = basicRadiationLevel;
 
-        List<Vector2> dataItem = new List<Vector2>();
+        List<Point> dataItem = new List<Point>();
         foreach (RaycastHit hit in hits.OrderBy(v => origin.position.ManhattanDist(v.point)))
         {
             // debug
             debugHitPoints.Add(hit.point);
             // debug
 
-            dataItem.Add(new Vector2(hit.point.x, hit.point.z));
-            //data.Add(new Vector2(hit.point.x, hit.point.z));
-
             Wall wall = hit.transform.gameObject.GetComponent<Wall>();
             if (wall != null)
             {
                 currentRadiationLevel -= wall.radiationDecrement;
-                continue;
             }
-
-            RadiationAffected affected = hit.transform.gameObject.GetComponent<RadiationAffected>();
-            if (affected != null)
+            else
             {
-                affected.AffectByRadiation(currentRadiationLevel);
-                continue;
+
+                RadiationAffected affected = hit.transform.gameObject.GetComponent<RadiationAffected>();
+                if (affected != null)
+                {
+                    affected.AffectByRadiation(currentRadiationLevel);
+                }
+                else
+                {
+                    Debug.LogError("Should not be reachable, check your layer mask");
+                }
             }
 
-            Debug.LogError("Should not be reachable, check your layer mask");
+            dataItem.Add(new Point(new Vector2(hit.point.x, hit.point.z), currentRadiationLevel));
+            //data.Add(new Vector2(hit.point.x, hit.point.z));
         }
 
         data.Add(new RayData(direction2D, dataItem.Count));
@@ -138,7 +141,7 @@ public class RadiationEmitter : MonoBehaviour
             pointData.Add(dataItem[i]);
 
         for (var i = used; i < LEN; i++)
-            pointData.Add(new Vector2());
+            pointData.Add(new Point(new Vector2(), 0f));
 
         // debug
         debugDirections.Add(direction);
