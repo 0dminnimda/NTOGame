@@ -88,6 +88,12 @@ public class RadiationEmitter : MonoBehaviour
             direction = rotation * direction;
         }
 
+        // so the circle would be completed
+        data.Add(data[0]);
+        pointData.Add(pointData[0]);
+        pointData.Add(pointData[1]);
+        pointData.Add(pointData[2]);
+        pointData.Add(pointData[3]);
     }
 
     private void ShootOneRay(Vector2 direction2D)
