@@ -23,21 +23,14 @@ struct Point
 
 StructuredBuffer<Point> points;
 
-RWStructuredBuffer<float> outData;
-
 float resolution;
 float scalar;
-
-float low;
-float high;
 
 float4 filling;
 float4 defaultColor;
 float4 transparent;
 
 float maxDistance;
-
-int x, y;
 float initRadLvl;
 
 float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
@@ -84,23 +77,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
         return;
     }
 
-    // threshold
     float4 color = defaultColor;
-
     int rayInd = binSearch(pixelPosition);
-    // float points1[LEN] = {
-    //     rays[rayInd*LEN + 0],
-    //     rays[rayInd*LEN + 1],
-    //     rays[rayInd*LEN + 2],
-    //     rays[rayInd*LEN + 3],
-    // }
-
-    // float points1[LEN] = {
-    //     rays[(rayInd + 1)*LEN + 0],
-    //     rays[(rayInd + 1)*LEN + 1],
-    //     rays[(rayInd + 1)*LEN + 2],
-    //     rays[(rayInd + 1)*LEN + 3],
-    // }
 
     Ray a = rays[rayInd];
     Ray b = rays[rayInd + 1];
@@ -143,12 +121,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
     // farther the point less alpha channel
     color.w = radLvl / initRadLvl;// - pixelDistance / maxDistance;
-
-    if (id.x == x && id.y == y)
-    {
-        color = filling;
-    }
-    
-    outData[id.x * 1024 + id.y] = initRadLvl;
     result[id.xy] = color;
 }
