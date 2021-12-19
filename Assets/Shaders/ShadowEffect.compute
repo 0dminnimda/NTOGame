@@ -80,8 +80,11 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     float4 color = defaultColor;
     int rayInd = binSearch(pixelPosition);
 
-    Ray a = rays[rayInd];
-    Ray b = rays[rayInd + 1];
+    int aInd = rayInd;
+    int bInd = rayInd + 1;
+
+    Ray a = rays[aInd];
+    Ray b = rays[bInd];
 
     float radLvl = initRadLvl;
 
@@ -93,11 +96,11 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // one ray have no intersections, another - more than 0
 
-        int current = a.ptsUsed == 0 ? (rayInd + 1) : rayInd;
+        int current = a.ptsUsed == 0 ? bInd : aInd;
         uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
         int ind = used - 1;
 
-        for (int i = 0; i < used; i++)
+        for (uint i = 0; i < used; i++)
         {
             if (pixelDistance < sqrDistance(points[current*LEN + i].v))
             {
@@ -116,7 +119,55 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // both rays have intersections
 
-        color = filling;
+        uint i;
+            
+        int aResInd = a.ptsUsed - 1;
+        for (i = 0; i < a.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[aInd*LEN + i].v))
+            {
+                aResInd = i - 1;
+                break;
+            }
+        }
+
+         
+        int bResInd = b.ptsUsed - 1;
+        for (i = 0; i < b.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[bInd*LEN + i].v))
+            {
+                bResInd = i - 1;
+                break;
+            }
+        }
+        
+        if (aResInd >= 0)
+        {
+            if (bResInd >= 0)
+            {
+                // two points after pixel
+                radLvl = (points[aInd*LEN + aResInd].radiationLvl +
+                          points[bInd*LEN + bResInd].radiationLvl) / 2;
+                color = filling;
+            }
+            else
+            {
+                // one point after pixel
+                radLvl = points[aInd*LEN + aResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+        }
+        else
+        {
+            if (bResInd >= 0)
+            {
+                // one point after pixel
+                radLvl = points[bInd*LEN + bResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+            // no points after pixel, do nothing
+        }
     }
 
     // farther the point less alpha channel
