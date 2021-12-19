@@ -59,6 +59,9 @@ public class RadiationVisualization : MonoBehaviour
     [SerializeField]
     Color32 transparent = new Color32(0, 0, 0, 0);
 
+    [SerializeField]
+    int x, y;
+
     RenderTexture rt;
 
     void Awake()
@@ -95,11 +98,14 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetVector("defaultColor", (Color)transparent);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
-
+        cum.SetFloat("initRadLvl", re.basicRadiationLevel);
+        
         //tex = new Texture2D(resolution, resolution);
 
         /*mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
         sr.sprite = mySprite;*/
+
+        ddt = new float[resolution * resolution];
     }
 
     void Update()
@@ -110,6 +116,9 @@ public class RadiationVisualization : MonoBehaviour
         }
     }
 
+    float[] ddt;
+    private bool o = true;
+    
     void Redraw()
     {
         // RGBA32 texture format data layout exactly matches Color32 struct
@@ -123,6 +132,10 @@ public class RadiationVisualization : MonoBehaviour
         pointBuffer.SetData(re.pointData);
         cum.SetBuffer(0, "points", pointBuffer);
 
+        ComputeBuffer dt = new ComputeBuffer(ddt.Length, sizeof(float));
+        dt.SetData(ddt);
+        cum.SetBuffer(0, "outData", dt);
+
         cum.SetFloat("scalar", scalar);
 
         cum.SetFloat("low", low);
@@ -132,10 +145,44 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetVector("defaultColor", (Color)defaultColor);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
+        cum.SetInt("x", x);
+        cum.SetInt("y", y);
 
         cum.Dispatch(0, rt.width / 8, rt.height / 8, 1);
+        
+        dt.GetData(ddt);
+        //ddt[115 * 4 + 1];
+        var t1 = ddt[777 * 1024 + 666];
+        var t2 = ddt[700 * 1024 + 620];
+        var t3 = ddt[624 * 1024 + 577];
+        var t4 = ddt[777 + 1024 * 666];
+        var t5 = ddt[700 + 1024 * 620];
+        var t6 = ddt[624 + 1024 * 577];
+
+
+        // 777, 666
+        // 700, 620
+        // 624, 577
+        
+        if (o)
+        {
+            var h = 0;
+            foreach (var g in ddt)
+            {
+                if (g != 0)
+                {
+                    Debug.LogFormat("{0}: {1}", g, h);
+                }
+
+                h++;
+            }
+
+            o = false;
+        }
+
         rayBuffer.Release();
         pointBuffer.Release();
+        dt.Release();
 
         // upload to the GPU
         //tex.Apply();
