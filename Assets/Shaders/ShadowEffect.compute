@@ -1,5 +1,6 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
+// #pragma enable_d3d11_debug_symbols
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
@@ -9,7 +10,7 @@ RWTexture2D<float4> result;
 struct Ray
 {
     float2 v;
-    int ptsUsed;
+    uint ptsUsed;
 };
 
 StructuredBuffer<Ray> rays;
@@ -22,6 +23,8 @@ struct Point
 
 StructuredBuffer<Point> points;
 
+RWStructuredBuffer<float> outData;
+
 float resolution;
 float scalar;
 
@@ -33,10 +36,11 @@ float4 defaultColor;
 float4 transparent;
 
 float maxDistance;
-#define initRadLvl 10
-#define decrease 1
 
-float sqrDistance(float2 a, float2 b)
+int x, y;
+float initRadLvl;
+
+float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
 {
     float2 v = a - b;
     return v.x * v.x + v.y * v.y;
@@ -73,14 +77,12 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     pixelPosition /= scalar;
 
     // circle borders
-    float pixelDistance = sqrDistance(pixelPosition, float2(0.0, 0.0));
+    float pixelDistance = sqrDistance(pixelPosition);
     if (pixelDistance > maxDistance)
     {
         result[id.xy] = transparent;
         return;
     }
-
-    //uint radLvl = initRadLvl;
 
     // threshold
     float4 color = defaultColor;
@@ -103,6 +105,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     Ray a = rays[rayInd];
     Ray b = rays[rayInd + 1];
 
+    float radLvl = initRadLvl;
+
     if (a.ptsUsed == 0 && b.ptsUsed == 0)
     {
         // no intersections, pass
@@ -111,7 +115,24 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // one ray have no intersections, another - more than 0
 
-        color = (filling + defaultColor) / 2;
+        int current = a.ptsUsed == 0 ? (rayInd + 1) : rayInd;
+        uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
+        int ind = used - 1;
+
+        for (int i = 0; i < used; i++)
+        {
+            if (pixelDistance < sqrDistance(points[current*LEN + i].v))
+            {
+                ind = i - 1;
+                break;
+            }
+        }
+
+        if (ind >= 0)
+        {
+            radLvl = points[current*LEN + ind].radiationLvl;
+            color = (filling + defaultColor) / 2;
+        }
     }
     else
     {
@@ -121,6 +142,13 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     }
 
     // farther the point less alpha channel
-    color.w = 1 - pixelDistance / maxDistance;
+    color.w = radLvl / initRadLvl;// - pixelDistance / maxDistance;
+
+    if (id.x == x && id.y == y)
+    {
+        color = filling;
+    }
+    
+    outData[id.x * 1024 + id.y] = initRadLvl;
     result[id.xy] = color;
 }
