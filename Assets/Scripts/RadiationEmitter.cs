@@ -98,7 +98,8 @@ public class RadiationEmitter : MonoBehaviour
 
     private void ShootOneRay(Vector2 direction2D)
     {
-        Vector3 direction = transform.InverseTransformPoint(direction2D);
+        //Vector3 direction = transform.TransformPoint(direction2D);
+        Vector3 direction = new Vector3(direction2D.x, 0, direction2D.y);
 
         RaycastHit[] hits = Physics.RaycastAll(origin.position, direction, maxDistance);
 
@@ -126,11 +127,13 @@ public class RadiationEmitter : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Should not be reachable, check your layer mask");
+                    Debug.LogErrorFormat("Should not be reachable, check your layer mask, we hit {0}",
+                                         hit.transform.gameObject.name);
                 }
             }
 
-            dataItem.Add(new Point(new Vector2(hit.point.x, hit.point.z), currentRadiationLevel));
+            Vector3 relativePoint = hit.point - transform.position;
+            dataItem.Add(new Point(new Vector2(relativePoint.x, relativePoint.z), currentRadiationLevel));
             //data.Add(new Vector2(hit.point.x, hit.point.z));
         }
 
