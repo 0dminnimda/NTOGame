@@ -508,8 +508,6 @@ MonoBehaviour:
   cum: {fileID: 7200000, guid: d7e292fcff0756e48ad3f093d9736561, type: 3}
   resolution: 1024
   scalar: 0
-  low: 0
-  high: 0.01
   filling:
     serializedVersion: 2
     rgba: 4278190335
@@ -519,6 +517,7 @@ MonoBehaviour:
   transparent:
     serializedVersion: 2
     rgba: 0
+  minAmountOfAlpha: 0.03
 --- !u!64 &1735757965
 MeshCollider:
   m_ObjectHideFlags: 0
