@@ -32,6 +32,7 @@ float4 transparent;
 
 float maxDistance;
 float initRadLvl;
+float minAmountOfAlpha;
 
 float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
 {
@@ -96,13 +97,13 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // one ray have no intersections, another - more than 0
 
-        int current = a.ptsUsed == 0 ? bInd : aInd;
+        int curInd = a.ptsUsed == 0 ? bInd : aInd;
         uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
         int ind = used - 1;
 
         for (uint i = 0; i < used; i++)
         {
-            if (pixelDistance < sqrDistance(points[current*LEN + i].v))
+            if (pixelDistance < sqrDistance(points[curInd*LEN + i].v))
             {
                 ind = i - 1;
                 break;
@@ -111,7 +112,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
 
         if (ind >= 0)
         {
-            radLvl = points[current*LEN + ind].radiationLvl;
+            radLvl = points[curInd*LEN + ind].radiationLvl;
             color = (filling + defaultColor) / 2;
         }
     }
@@ -131,7 +132,6 @@ void CSMain (uint3 id : SV_DispatchThreadID)
             }
         }
 
-         
         int bResInd = b.ptsUsed - 1;
         for (i = 0; i < b.ptsUsed; i++)
         {
@@ -171,6 +171,10 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     }
 
     // farther the point less alpha channel
-    color.w = radLvl / initRadLvl;// - pixelDistance / maxDistance;
+    color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance);
+    if (color.w < minAmountOfAlpha)
+        color.w = minAmountOfAlpha;
+    // - ((pixelDistance - prevPointDist) / maxDistance);
+    //color.w = prevPointDist / maxDistance;
     result[id.xy] = color;
 }
