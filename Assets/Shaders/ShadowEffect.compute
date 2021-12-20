@@ -4,8 +4,6 @@
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
-RWTexture2D<float4> result;
-
 #define LEN 4
 struct Ray
 {
@@ -13,26 +11,31 @@ struct Ray
     uint ptsUsed;
 };
 
-StructuredBuffer<Ray> rays;
-
 struct Point
 {
     float2 v;
     float radiationLvl;
 };
 
+// ChangeEveryFrame
+StructuredBuffer<Ray> rays;
 StructuredBuffer<Point> points;
 
-float resolution;
-float scalar;
+cbuffer BasicallyUnchangable
+{
+    RWTexture2D<float4> result;
+    
+    float resolution;
+    float scalar;
 
-float4 filling;
-float4 defaultColor;
-float4 transparent;
+    float4 filling;
+    float4 defaultColor;
+    float4 transparent;
 
-float maxDistance;
-float initRadLvl;
-float minAmountOfAlpha;
+    float maxDistance;
+    float initRadLvl;
+    float minAmountOfAlpha;
+}
 
 float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
 {
@@ -47,13 +50,12 @@ int binSearch(float2 T)
 
     T.y *= -1; // smell code so this will work :)
 
-    uint m;
     uint L = 0;
     uint R = n - 1;
 
     while (L < R + 1)
     {
-        m = floor((L + R) / 2);
+        const uint m = floor((L + R) / 2);
         float2 v = rays[m].v;
         if (cross(float3(v.x, v.y, 0.0), float3(T.x, T.y, 0.0)).z > 0)
             L = m + 1;
@@ -71,7 +73,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     pixelPosition /= scalar;
 
     // circle borders
-    float pixelDistance = sqrDistance(pixelPosition);
+    const float pixelDistance = sqrDistance(pixelPosition);
     if (pixelDistance > maxDistance)
     {
         result[id.xy] = transparent;
@@ -79,13 +81,13 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     }
 
     float4 color = defaultColor;
-    int rayInd = binSearch(pixelPosition);
+    const int rayInd = binSearch(pixelPosition);
 
-    int aInd = rayInd;
-    int bInd = rayInd + 1;
+    const int aInd = rayInd;
+    const int bInd = rayInd + 1;
 
-    Ray a = rays[aInd];
-    Ray b = rays[bInd];
+    const Ray a = rays[aInd];
+    const Ray b = rays[bInd];
 
     float radLvl = initRadLvl;
 
@@ -97,8 +99,8 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // one ray have no intersections, another - more than 0
 
-        int curInd = a.ptsUsed == 0 ? bInd : aInd;
-        uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
+        const int curInd = a.ptsUsed == 0 ? bInd : aInd;
+        const uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
         int ind = used - 1;
 
         for (uint i = 0; i < used; i++)
