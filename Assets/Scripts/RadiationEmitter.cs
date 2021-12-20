@@ -16,7 +16,7 @@ public class RadiationEmitter : MonoBehaviour
     Transform origin;
 
     [SerializeField]
-    float basicRadiationLevel;
+    public float basicRadiationLevel;
 
     float debugMaxDistance = 10;
     List<Vector3> debugDirections = new List<Vector3>();

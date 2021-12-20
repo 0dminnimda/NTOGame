@@ -43,14 +43,9 @@ public class RadiationVisualization : MonoBehaviour
     ComputeShader cum;
 
     [SerializeField]
-    int resolution;
+    int resolution = 1024;
     [SerializeField]
     float scalar;
-
-    [SerializeField]
-    float low;
-    [SerializeField]
-    float high;
 
     [SerializeField]
     Color32 filling = new Color32(255, 0, 0, 255);
@@ -58,6 +53,9 @@ public class RadiationVisualization : MonoBehaviour
     Color32 defaultColor = new Color32(255, 255, 255, 255);
     [SerializeField]
     Color32 transparent = new Color32(0, 0, 0, 0);
+
+    [SerializeField]
+    float minAmountOfAlpha = 0.03f;
 
     RenderTexture rt;
 
@@ -88,14 +86,14 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetFloat("resolution", resolution);
         cum.SetFloat("scalar", scalar);
 
-        cum.SetFloat("low", low);
-        cum.SetFloat("high", high);
-
+        cum.SetVector("filling", (Color)filling);
         cum.SetVector("defaultColor", (Color)defaultColor);
-        cum.SetVector("defaultColor", (Color)transparent);
+        cum.SetVector("transparent", (Color)transparent);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
-
+        cum.SetFloat("initRadLvl", re.basicRadiationLevel);
+        cum.SetFloat("minAmountOfAlpha", minAmountOfAlpha);
+        
         //tex = new Texture2D(resolution, resolution);
 
         /*mySprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
@@ -109,7 +107,7 @@ public class RadiationVisualization : MonoBehaviour
             Redraw();
         }
     }
-
+    
     void Redraw()
     {
         // RGBA32 texture format data layout exactly matches Color32 struct
@@ -123,17 +121,8 @@ public class RadiationVisualization : MonoBehaviour
         pointBuffer.SetData(re.pointData);
         cum.SetBuffer(0, "points", pointBuffer);
 
-        cum.SetFloat("scalar", scalar);
-
-        cum.SetFloat("low", low);
-        cum.SetFloat("high", high);
-
-        cum.SetVector("filling", (Color)filling);
-        cum.SetVector("defaultColor", (Color)defaultColor);
-
-        cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
-
         cum.Dispatch(0, rt.width / 8, rt.height / 8, 1);
+
         rayBuffer.Release();
         pointBuffer.Release();
 

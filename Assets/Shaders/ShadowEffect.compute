@@ -1,18 +1,15 @@
 // Each #kernel tells which function to compile; you can have many kernels
 #pragma kernel CSMain
+// #pragma enable_d3d11_debug_symbols
 
 // Create a RenderTexture with enableRandomWrite flag and set it
 // with cs.SetTexture
-RWTexture2D<float4> result;
-
 #define LEN 4
 struct Ray
 {
     float2 v;
-    int ptsUsed;
+    uint ptsUsed;
 };
-
-StructuredBuffer<Ray> rays;
 
 struct Point
 {
@@ -20,23 +17,27 @@ struct Point
     float radiationLvl;
 };
 
+// ChangeEveryFrame
+StructuredBuffer<Ray> rays;
 StructuredBuffer<Point> points;
 
-float resolution;
-float scalar;
+cbuffer BasicallyUnchangable
+{
+    RWTexture2D<float4> result;
+    
+    float resolution;
+    float scalar;
 
-float low;
-float high;
+    float4 filling;
+    float4 defaultColor;
+    float4 transparent;
 
-float4 filling;
-float4 defaultColor;
-float4 transparent;
+    float maxDistance;
+    float initRadLvl;
+    float minAmountOfAlpha;
+}
 
-float maxDistance;
-#define initRadLvl 10
-#define decrease 1
-
-float sqrDistance(float2 a, float2 b)
+float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
 {
     float2 v = a - b;
     return v.x * v.x + v.y * v.y;
@@ -49,13 +50,12 @@ int binSearch(float2 T)
 
     T.y *= -1; // smell code so this will work :)
 
-    uint m;
     uint L = 0;
     uint R = n - 1;
 
     while (L < R + 1)
     {
-        m = floor((L + R) / 2);
+        const uint m = floor((L + R) / 2);
         float2 v = rays[m].v;
         if (cross(float3(v.x, v.y, 0.0), float3(T.x, T.y, 0.0)).z > 0)
             L = m + 1;
@@ -73,35 +73,23 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     pixelPosition /= scalar;
 
     // circle borders
-    float pixelDistance = sqrDistance(pixelPosition, float2(0.0, 0.0));
+    const float pixelDistance = sqrDistance(pixelPosition);
     if (pixelDistance > maxDistance)
     {
         result[id.xy] = transparent;
         return;
     }
 
-    //uint radLvl = initRadLvl;
-
-    // threshold
     float4 color = defaultColor;
+    const int rayInd = binSearch(pixelPosition);
 
-    int rayInd = binSearch(pixelPosition);
-    // float points1[LEN] = {
-    //     rays[rayInd*LEN + 0],
-    //     rays[rayInd*LEN + 1],
-    //     rays[rayInd*LEN + 2],
-    //     rays[rayInd*LEN + 3],
-    // }
+    const int aInd = rayInd;
+    const int bInd = rayInd + 1;
 
-    // float points1[LEN] = {
-    //     rays[(rayInd + 1)*LEN + 0],
-    //     rays[(rayInd + 1)*LEN + 1],
-    //     rays[(rayInd + 1)*LEN + 2],
-    //     rays[(rayInd + 1)*LEN + 3],
-    // }
+    const Ray a = rays[aInd];
+    const Ray b = rays[bInd];
 
-    Ray a = rays[rayInd];
-    Ray b = rays[rayInd + 1];
+    float radLvl = initRadLvl;
 
     if (a.ptsUsed == 0 && b.ptsUsed == 0)
     {
@@ -111,16 +99,82 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     {
         // one ray have no intersections, another - more than 0
 
-        color = (filling + defaultColor) / 2;
+        const int curInd = a.ptsUsed == 0 ? bInd : aInd;
+        const uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
+        int ind = used - 1;
+
+        for (uint i = 0; i < used; i++)
+        {
+            if (pixelDistance < sqrDistance(points[curInd*LEN + i].v))
+            {
+                ind = i - 1;
+                break;
+            }
+        }
+
+        if (ind >= 0)
+        {
+            radLvl = points[curInd*LEN + ind].radiationLvl;
+            color = (filling + defaultColor) / 2;
+        }
     }
     else
     {
         // both rays have intersections
 
-        color = filling;
+        uint i;
+            
+        int aResInd = a.ptsUsed - 1;
+        for (i = 0; i < a.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[aInd*LEN + i].v))
+            {
+                aResInd = i - 1;
+                break;
+            }
+        }
+
+        int bResInd = b.ptsUsed - 1;
+        for (i = 0; i < b.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[bInd*LEN + i].v))
+            {
+                bResInd = i - 1;
+                break;
+            }
+        }
+        
+        if (aResInd >= 0)
+        {
+            if (bResInd >= 0)
+            {
+                // two points after pixel
+                radLvl = (points[aInd*LEN + aResInd].radiationLvl +
+                          points[bInd*LEN + bResInd].radiationLvl) / 2;
+                color = filling;
+            }
+            else
+            {
+                // one point after pixel
+                radLvl = points[aInd*LEN + aResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+        }
+        else
+        {
+            if (bResInd >= 0)
+            {
+                // one point after pixel
+                radLvl = points[bInd*LEN + bResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+            // no points after pixel, do nothing
+        }
     }
 
     // farther the point less alpha channel
-    color.w = 1 - pixelDistance / maxDistance;
+    color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance);
+    if (color.w < minAmountOfAlpha)
+        color.w = minAmountOfAlpha;
     result[id.xy] = color;
 }
