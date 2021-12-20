@@ -49,8 +49,8 @@ public class RadiationVisualization : MonoBehaviour
 
     [SerializeField]
     Color32 filling = new Color32(255, 0, 0, 255);
-    [SerializeField]
-    Color32 defaultColor = new Color32(255, 255, 255, 255);
+    // [SerializeField]
+    // Color32 defaultColor = new Color32(255, 255, 255, 255);
     [SerializeField]
     Color32 transparent = new Color32(0, 0, 0, 0);
 
@@ -87,7 +87,7 @@ public class RadiationVisualization : MonoBehaviour
         cum.SetFloat("scalar", scalar);
 
         cum.SetVector("filling", (Color)filling);
-        cum.SetVector("defaultColor", (Color)defaultColor);
+        cum.SetVector("defaultColor", (Color)filling);
         cum.SetVector("transparent", (Color)transparent);
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
