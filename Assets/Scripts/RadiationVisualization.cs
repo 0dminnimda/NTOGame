@@ -43,7 +43,7 @@ public class RadiationVisualization : MonoBehaviour
     ComputeShader cum;
 
     [SerializeField]
-    int resolution;
+    int resolution = 1024;
     [SerializeField]
     float scalar;
 
@@ -53,6 +53,9 @@ public class RadiationVisualization : MonoBehaviour
     Color32 defaultColor = new Color32(255, 255, 255, 255);
     [SerializeField]
     Color32 transparent = new Color32(0, 0, 0, 0);
+
+    [SerializeField]
+    float minAmountOfAlpha = 0.03f;
 
     RenderTexture rt;
 
@@ -89,6 +92,7 @@ public class RadiationVisualization : MonoBehaviour
 
         cum.SetFloat("maxDistance", re.maxDistance * re.maxDistance);
         cum.SetFloat("initRadLvl", re.basicRadiationLevel);
+        cum.SetFloat("minAmountOfAlpha", minAmountOfAlpha);
         
         //tex = new Texture2D(resolution, resolution);
 
