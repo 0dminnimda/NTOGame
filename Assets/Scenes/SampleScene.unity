@@ -510,7 +510,7 @@ MonoBehaviour:
   scalar: 0
   filling:
     serializedVersion: 2
-    rgba: 4278190335
+    rgba: 4294967295
   defaultColor:
     serializedVersion: 2
     rgba: 4294967295
