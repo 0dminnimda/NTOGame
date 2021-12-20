@@ -174,7 +174,5 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance);
     if (color.w < minAmountOfAlpha)
         color.w = minAmountOfAlpha;
-    // - ((pixelDistance - prevPointDist) / maxDistance);
-    //color.w = prevPointDist / maxDistance;
     result[id.xy] = color;
 }
