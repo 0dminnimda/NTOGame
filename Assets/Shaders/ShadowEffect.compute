@@ -48,8 +48,6 @@ int binSearch(float2 T)
     uint n,  _;
     rays.GetDimensions(n, _);
 
-    T.y *= -1; // smell code so this will work :)
-
     uint L = 0;
     uint R = n - 1;
 
