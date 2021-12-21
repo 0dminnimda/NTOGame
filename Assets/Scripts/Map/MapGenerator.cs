@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using static Map.Direction;
+using static Map.DirectionExt;
 using Random = UnityEngine.Random;
 
 namespace Map
@@ -35,8 +37,20 @@ namespace Map
 			new AreaData("S W", new[] {S, W}),
 
 			// straight paths
-			new AreaData("W E", new[] {W, E}),
+			new AreaData("E W", new[] {E, W}),
 			new AreaData("N S", new[] {N, S}),
+		};
+
+		private Dictionary<int, int> angle2turn3 = new Dictionary<int, int>
+		{
+			{DirectionArrayHash(new [] {W, N}), -90},
+			{DirectionArrayHash(new [] {N, E}), 0},
+			{DirectionArrayHash(new [] {E, S}), 90},
+			{DirectionArrayHash(new [] {S, W}), 180},
+			{DirectionArrayHash(new [] {N, E, S}), 180},
+			{DirectionArrayHash(new [] {E, S, W}), -90},
+			{DirectionArrayHash(new [] {S, W, N}), 0},
+			{DirectionArrayHash(new [] {W, N, E}), 90},
 		};
 
 		/// <summary>
@@ -44,6 +58,12 @@ namespace Map
 		/// </summary>
 		public List<AreaData> generatedAreas { get; set; }
 
+		public GameObject[] areaOne; 
+		public GameObject[] areaTwoStraight;
+		public GameObject[] areaTwoTurn;
+		public GameObject[] areaThree;
+		public GameObject[] areaFour;
+		
 		private List<GameObject> generatedObjects;
 
 		/// <summary>
@@ -207,6 +227,8 @@ namespace Map
 					break;
 				}
 			}
+
+			CreateMeshes();
 		}
 
 
@@ -261,8 +283,6 @@ namespace Map
 		void Start()
 		{
 			Generate();
-
-			CreateCubeRepresentation();
 		}
 
 		void Update()
@@ -275,35 +295,64 @@ namespace Map
 				}
 
 				generatedObjects.Clear();
-				Start();
+				Generate();
 			}
 		}
-
 
 		/// <summary>
 		/// Creates cubes for each generated area and cubes to show the transitions between each.
 		/// Transitions are offset so that we can see 1 exists in each direction (to/from).
 		/// </summary>
-		void CreateCubeRepresentation()
+		void CreateMeshes()
 		{
 			generatedObjects = new List<GameObject>();
 
-			for (int i = 0; i < generatedAreas.Count; i++)
+			foreach (var area in generatedAreas)
 			{
-				GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-				generatedObjects.Add(cube);
-				// Attach an Area component so we can easily inspect the AreaData in the editor.
-				DebugArea area = cube.AddComponent<DebugArea>();
-				generatedAreas[i].name = i + " - " + generatedAreas[i].name;
-				area.areaData = generatedAreas[i];
-				cube.transform.position = generatedAreas[i].coordinates.ToVector3();
-				cube.transform.localScale = 0.75f * Vector3.one;
-				cube.name = generatedAreas[i].name;
+				int angle;
+				GameObject d;
+				var key = area.transitions.First().Key;
+				//area.transitions = area.transitions.OrderBy(x => x.Key).ToDictionary(x => x);
 
-				foreach (var item in generatedAreas[i].transitions)
+				var t = area.Type();
+				switch (t)
+				{
+					case AreaType.One:
+						d = areaOne[0];         angle = area.transitions.First().Key.GetAngle() + 180;
+						break;
+					case AreaType.TwoStraight:
+						d = areaTwoStraight[0]; angle = area.transitions.First().Key.GetAngle();
+						break;
+					case AreaType.TwoTurn:
+						d = areaTwoTurn[0];     angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
+						break;
+					case AreaType.Three:
+						d = areaThree[0];       angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
+						break;
+					case AreaType.Four:
+						d = areaFour[0];        angle = 0;
+						break;
+					default:
+						throw new System.Exception(
+							"Invalid area type: " +
+							area.Type().ToString());
+				}
+
+				//angle = area.availableTransitions[0].GetAngle();
+				GameObject o = Instantiate(d, area.coordinates.ToVector3() + Vector3.down / 2,
+					Quaternion.Euler(0, angle, 0));
+
+				generatedObjects.Add(o);
+				// Attach an Area component so we can easily inspect the AreaData in the editor.
+				DebugArea dbArea = o.AddComponent<DebugArea>();
+				dbArea.areaData = area;
+				// cube.transform.localScale = 0.75f * Vector3.one;
+				o.name = area.name;
+
+				foreach (var item in area.transitions)
 				{
 					Vector3 transitionPostion =
-						0.5f * (generatedAreas[i].coordinates.ToVector3() + item.Value.Key.coordinates.ToVector3());
+						0.5f * (area.coordinates.ToVector3() + item.Value.Key.coordinates.ToVector3());
 
 					GameObject transition = GameObject.CreatePrimitive(PrimitiveType.Cube);
 					Vector3 scale = 0.125f * Vector3.one;
@@ -313,27 +362,28 @@ namespace Map
 					{
 						case Direction.N:
 							transitionPostion.x += 0.125f;
-							scale.z = 0.25f;
+							scale.z = 0.5f;
 							break;
 						case Direction.E:
 							transitionPostion.z += 0.125f;
-							scale.x = 0.25f;
+							scale.x = 0.5f;
 							break;
 						case Direction.S:
-							scale.z = 0.25f;
+							scale.z = 0.5f;
 							transitionPostion.x -= 0.125f;
 							break;
 						case Direction.W:
 							transitionPostion.z -= 0.125f;
-							scale.x = 0.25f;
+							scale.x = 0.5f;
 							break;
 						default:
 							break;
 					}
 
+					transition.GetComponent<MeshRenderer>().material.color = Color.green;
 					transition.transform.position = transitionPostion;
 					transition.transform.localScale = scale;
-					transition.transform.SetParent(cube.transform, true);
+					transition.transform.SetParent(o.transform, true);
 				}
 			}
 		}
