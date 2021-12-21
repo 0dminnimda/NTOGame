@@ -25,6 +25,8 @@ namespace Map
 
 		public Coordinates coordinates;
 
+		public int assetVariation = -1;
+		
 		/// <summary>
 		/// The transitions that have been connected to.
 		/// </summary>

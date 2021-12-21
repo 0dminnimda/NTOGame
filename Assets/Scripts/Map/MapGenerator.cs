@@ -63,6 +63,7 @@ namespace Map
 		public GameObject[] areaTwoTurn;
 		public GameObject[] areaThree;
 		public GameObject[] areaFour;
+		public GameObject reactor;
 		
 		private List<GameObject> generatedObjects;
 
@@ -310,30 +311,40 @@ namespace Map
 		{
 			generatedObjects = new List<GameObject>();
 
-			foreach (var area in generatedAreas)
+			// create reactor
+			CreateArea(reactor, generatedAreas[0], 0);
+			
+			for (var i = reactorData.Length; i < generatedAreas.Count; i++)
 			{
+				var area = generatedAreas[i];
 				int angle;
 				GameObject d;
-				var key = area.transitions.First().Key;
-				//area.transitions = area.transitions.OrderBy(x => x.Key).ToDictionary(x => x);
-
-				var t = area.Type();
-				switch (t)
+				switch (area.Type())
 				{
 					case AreaType.One:
-						d = areaOne[0];         angle = area.transitions.First().Key.GetAngle() + 180;
+						area.assetVariation = Random.Range(0, areaOne.Length);
+						d = areaOne[area.assetVariation];
+						angle = area.transitions.First().Key.GetAngle() + 180;
 						break;
 					case AreaType.TwoStraight:
-						d = areaTwoStraight[0]; angle = area.transitions.First().Key.GetAngle();
+						area.assetVariation = Random.Range(0, areaTwoStraight.Length);
+						d = areaTwoStraight[area.assetVariation];
+						angle = area.transitions.First().Key.GetAngle();
 						break;
 					case AreaType.TwoTurn:
-						d = areaTwoTurn[0];     angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
+						area.assetVariation = Random.Range(0, areaTwoTurn.Length);
+						d = areaTwoTurn[area.assetVariation];
+						angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
 						break;
 					case AreaType.Three:
-						d = areaThree[0];       angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
+						area.assetVariation = Random.Range(0, areaThree.Length);
+						d = areaThree[area.assetVariation];
+						angle = angle2turn3[DirectionArrayHash(area.transitions.Keys)];
 						break;
 					case AreaType.Four:
-						d = areaFour[0];        angle = 0;
+						area.assetVariation = Random.Range(0, areaFour.Length);
+						d = areaFour[area.assetVariation];
+						angle = 0;
 						break;
 					default:
 						throw new System.Exception(
