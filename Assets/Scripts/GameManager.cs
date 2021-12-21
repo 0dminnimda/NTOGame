@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Map;
@@ -11,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     public MapGenerator generator;
     public Spawner spawner;
+    private PlayerMovement movement;
 
     void Awake()
     {
@@ -26,6 +28,7 @@ public class GameManager : MonoBehaviour
         
         generator = GetComponent<MapGenerator>();
         spawner = GetComponent<Spawner>();
+        movement = spawner.mainCharacter.GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -48,5 +51,10 @@ public class GameManager : MonoBehaviour
         }
 
         spawner.UpdateSpawn();
+    }
+
+    private void FixedUpdate()
+    {
+        movement.UpdatePlayer();
     }
 }
