@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Map
 {
     public enum Direction
@@ -28,6 +30,25 @@ namespace Map
                         "Invalid Direction: " +
                         direction.ToString());
             }
+        }
+
+        public static int GetAngle(this Direction direction)
+        {
+            return ((int) direction) * 90;
+        }
+
+        public static int DirectionArrayHash(IEnumerable<Direction> arr)
+        {
+            int hash = 17;
+            foreach (int i in arr)
+            {
+                unchecked // Overflow is fine, just wrap
+                {
+                    hash *= (3 + i).GetHashCode();
+                }
+            }
+            
+            return hash;
         }
     }
 }
