@@ -7,13 +7,6 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject mainCharacter;
-    
-    GameManager manager;
-    
-    void Awake()
-    {
-        manager = GetComponent<GameManager>();
-    }
 
     public void StartSpawn()
     {
@@ -23,7 +16,7 @@ public class Spawner : MonoBehaviour
 
     void SpawnMainCharacter()
     {
-        var position = manager.generator.generatedAreas[0].coordinates.ToVector3();
+        var position = GameManager.Instance.generator.generatedAreas[0].coordinates.ToVector3();
         position.y = 100;
         
         RaycastHit hit;
