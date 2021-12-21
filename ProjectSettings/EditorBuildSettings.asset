@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LevelGeneration.unity
     guid: c89ef8b28406cc348822c2e5e07fd094
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Radiation.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
