@@ -48,8 +48,6 @@ int binSearch(float2 T)
     uint n,  _;
     rays.GetDimensions(n, _);
 
-    T.y *= -1; // smell code so this will work :)
-
     uint L = 0;
     uint R = n - 1;
 
@@ -173,7 +171,7 @@ void CSMain (uint3 id : SV_DispatchThreadID)
     }
 
     // farther the point less alpha channel
-    color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance);
+    color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance / 2);
     if (color.w < minAmountOfAlpha)
         color.w = minAmountOfAlpha;
     result[id.xy] = color;

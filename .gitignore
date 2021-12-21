@@ -38,3 +38,6 @@ sysinfo.txt
 
 # Logs
 Logs/
+
+# IntelJ
+.idea/
