@@ -349,42 +349,42 @@ namespace Map
 				// cube.transform.localScale = 0.75f * Vector3.one;
 				o.name = area.name;
 
-				foreach (var item in area.transitions)
-				{
-					Vector3 transitionPostion =
-						0.5f * (area.coordinates.ToVector3() + item.Value.Key.coordinates.ToVector3());
-
-					GameObject transition = GameObject.CreatePrimitive(PrimitiveType.Cube);
-					Vector3 scale = 0.125f * Vector3.one;
-					transition.name = item.Key.ToString() + " to " + item.Value.Value.ToString();
-
-					switch (item.Key)
-					{
-						case Direction.N:
-							transitionPostion.x += 0.125f;
-							scale.z = 0.5f;
-							break;
-						case Direction.E:
-							transitionPostion.z += 0.125f;
-							scale.x = 0.5f;
-							break;
-						case Direction.S:
-							scale.z = 0.5f;
-							transitionPostion.x -= 0.125f;
-							break;
-						case Direction.W:
-							transitionPostion.z -= 0.125f;
-							scale.x = 0.5f;
-							break;
-						default:
-							break;
-					}
-
-					transition.GetComponent<MeshRenderer>().material.color = Color.green;
-					transition.transform.position = transitionPostion;
-					transition.transform.localScale = scale;
-					transition.transform.SetParent(o.transform, true);
-				}
+				// foreach (var item in area.transitions)
+				// {
+				// 	Vector3 transitionPostion =
+				// 		0.5f * (area.coordinates.ToVector3() + item.Value.Key.coordinates.ToVector3());
+				//
+				// 	GameObject transition = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				// 	Vector3 scale = 0.125f * Vector3.one;
+				// 	transition.name = item.Key.ToString() + " to " + item.Value.Value.ToString();
+				//
+				// 	switch (item.Key)
+				// 	{
+				// 		case Direction.N:
+				// 			transitionPostion.x += 0.125f;
+				// 			scale.z = 0.5f;
+				// 			break;
+				// 		case Direction.E:
+				// 			transitionPostion.z += 0.125f;
+				// 			scale.x = 0.5f;
+				// 			break;
+				// 		case Direction.S:
+				// 			scale.z = 0.5f;
+				// 			transitionPostion.x -= 0.125f;
+				// 			break;
+				// 		case Direction.W:
+				// 			transitionPostion.z -= 0.125f;
+				// 			scale.x = 0.5f;
+				// 			break;
+				// 		default:
+				// 			break;
+				// 	}
+				//
+				// 	transition.GetComponent<MeshRenderer>().material.color = Color.green;
+				// 	transition.transform.position = transitionPostion;
+				// 	transition.transform.localScale = scale;
+				// 	transition.transform.SetParent(o.transform, true);
+				// }
 			}
 		}
 	}
