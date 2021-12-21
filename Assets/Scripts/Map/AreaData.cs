@@ -1,9 +1,18 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace Map
 {
+	public enum AreaType : int
+	{
+		One,
+		TwoStraight,
+		TwoTurn,
+		Three,
+		Four
+	}
+	
 	[Serializable] // Serialized so it will show in Unity's inspector.
 	public class AreaData
 	{
@@ -39,6 +48,27 @@ namespace Map
 			availableTransitions.CopyTo(this.availableTransitions, 0);
 		}
 
+		public AreaType Type()
+		{
+			switch (transitions.Count)
+			{
+				case 1:
+					return AreaType.One;
+				case 2:
+					var e = transitions.GetEnumerator();
+					e.MoveNext(); e.MoveNext();
+					if (transitions.First().Key.GetOpposite() == e.Current.Key)
+						return AreaType.TwoStraight;
+					else
+						return AreaType.TwoTurn;
+				case 3:
+					return AreaType.Three;
+				case 4:
+					return AreaType.Four;
+			}
+
+			throw new ArgumentException("There's no such type of area as " + this);
+		}
 
 		/// <summary>
 		/// When the transition has been used we will add it to the transitions list.
