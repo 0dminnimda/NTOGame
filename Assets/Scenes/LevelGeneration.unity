@@ -300,7 +300,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1df82fb2ce540e2abb4437e7a551ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iterations: 50
+  iterations: 100
+  areaOne:
+  - {fileID: 6609244219953912645, guid: 1eea29a1861d16749bde720583b32fc0, type: 3}
+  areaTwoStraight:
+  - {fileID: 2323227065701894552, guid: 2b54877f750101540b646dbc776ed5c7, type: 3}
+  areaTwoTurn:
+  - {fileID: 590226440454530785, guid: 1999b2dfd22826b41814c24a0d31c2ae, type: 3}
+  areaThree:
+  - {fileID: 6565799260328466344, guid: 81a8dc8327526ed4f8a0c300b3ed5e2f, type: 3}
+  areaFour:
+  - {fileID: 5160925266171109266, guid: 9fe391d304b723b418887bb959b2676d, type: 3}
 --- !u!4 &1833773971
 Transform:
   m_ObjectHideFlags: 0
