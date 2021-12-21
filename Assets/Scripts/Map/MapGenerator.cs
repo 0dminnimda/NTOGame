@@ -66,6 +66,31 @@ namespace Map
 		
 		private List<GameObject> generatedObjects;
 
+		static (String, Direction[], Coordinates)[] reactorData =
+#if false
+		{
+			("Reactor-ul", new [] {N, E, S, W}, new Coordinates(-1,  1)),
+			("Reactor-u",  new [] {N, E, S, W}, new Coordinates( 0,  1)),
+			("Reactor-ur", new [] {N, E, S, W}, new Coordinates( 1,  1)),
+
+			("Reactor-l",  new [] {N, E, S, W}, new Coordinates(-1,  0)),
+			("Reactor",    new [] {N, E, S, W}, new Coordinates( 0,  0)),
+			("Reactor-r",  new [] {N, E, S, W}, new Coordinates( 1,  0)),
+
+			("Reactor-dl", new [] {N, E, S, W}, new Coordinates(-1, -1)),
+			("Reactor-d",  new [] {N, E, S, W}, new Coordinates( 0, -1)),
+			("Reactor-dr", new [] {N, E, S, W}, new Coordinates( 1, -1)),
+		};
+#else
+		{
+			("Reactor-ul", new[] {N, E, S, W}, new Coordinates(0, 1)),
+			("Reactor-ur", new[] {N, E, S, W}, new Coordinates(1, 1)),
+			
+			("Reactor-dl", new[] {N, E, S, W}, new Coordinates(0, 0)),
+			("Reactor-dr", new[] {N, E, S, W}, new Coordinates(1, 0)),
+		};
+#endif
+		
 		/// <summary>
 		/// Is called when this component is added to a GameObject. 
 		/// Sets up some default areas.
@@ -95,31 +120,9 @@ namespace Map
 		AreaData InitialAreas()
 		{
 			generatedAreas = new List<AreaData>();
-
-			(String, Direction[], Coordinates)[] data =
-#if false
-		{
-			("Reactor",    new [] {N, E, S, W}, new Coordinates( 0,  0)),
-			("Reactor-l",  new [] {N, E, S, W}, new Coordinates(-1,  0)),
-			("Reactor-r",  new [] {N, E, S, W}, new Coordinates( 1,  0)),
-			("Reactor-u",  new [] {N, E, S, W}, new Coordinates( 0,  1)),
-			("Reactor-d",  new [] {N, E, S, W}, new Coordinates( 0, -1)),
-			("Reactor-ul", new [] {N, E, S, W}, new Coordinates(-1,  1)),
-			("Reactor-ur", new [] {N, E, S, W}, new Coordinates( 1,  1)),
-			("Reactor-dl", new [] {N, E, S, W}, new Coordinates(-1, -1)),
-			("Reactor-dr", new [] {N, E, S, W}, new Coordinates( 1, -1)),
-		};
-#else
-			{
-				("Reactor-ul", new[] {N, E, S, W}, new Coordinates(0, 1)),
-				("Reactor-ur", new[] {N, E, S, W}, new Coordinates(1, 1)),
-				("Reactor-dl", new[] {N, E, S, W}, new Coordinates(0, 0)),
-				("Reactor-dr", new[] {N, E, S, W}, new Coordinates(1, 0)),
-			};
-#endif
-
+			
 			AreaData area = null;
-			foreach ((string name, Direction[] dir, Coordinates coord) in data)
+			foreach ((string name, Direction[] dir, Coordinates coord) in reactorData)
 			{
 				area = new AreaData(name, dir);
 				area.coordinates = coord;
