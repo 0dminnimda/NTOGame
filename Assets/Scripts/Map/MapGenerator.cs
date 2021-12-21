@@ -41,7 +41,7 @@ namespace Map
 			new AreaData("N S", new[] {N, S}),
 		};
 
-		private Dictionary<int, int> angle2turn3 = new Dictionary<int, int>
+		private static Dictionary<int, int> angle2turn3 = new Dictionary<int, int>
 		{
 			{DirectionArrayHash(new [] {W, N}), -90},
 			{DirectionArrayHash(new [] {N, E}), 0},
@@ -58,15 +58,23 @@ namespace Map
 		/// </summary>
 		public List<AreaData> generatedAreas { get; set; }
 
-		public GameObject[] areaOne; 
-		public GameObject[] areaTwoStraight;
-		public GameObject[] areaTwoTurn;
-		public GameObject[] areaThree;
-		public GameObject[] areaFour;
-		public GameObject reactor;
+		[SerializeField]
+		private GameObject[] areaOne;
+		[SerializeField]
+		private GameObject[] areaTwoStraight;
+		[SerializeField]
+		private GameObject[] areaTwoTurn;
+		[SerializeField]
+		private GameObject[] areaThree;
+		[SerializeField]
+		private GameObject[] areaFour;
+		[SerializeField]
+		private GameObject reactor;
 		
-		private List<GameObject> generatedObjects;
+		public List<GameObject> generatedObjects;
 
+		public Transform paternt;
+		
 		static (String, Direction[], Coordinates)[] reactorData =
 #if false
 		{
@@ -143,7 +151,7 @@ namespace Map
 			}
 		}
 
-		void Generate()
+		public void Generate()
 		{
 			AreaData newArea = InitialAreas();
 
@@ -283,26 +291,6 @@ namespace Map
 			return null;
 		}
 
-
-		void Start()
-		{
-			Generate();
-		}
-
-		void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				foreach (GameObject o in generatedObjects)
-				{
-					Destroy(o);
-				}
-
-				generatedObjects.Clear();
-				Generate();
-			}
-		}
-
 		/// <summary>
 		/// Creates cubes for each generated area and cubes to show the transitions between each.
 		/// Transitions are offset so that we can see 1 exists in each direction (to/from).
@@ -360,7 +348,7 @@ namespace Map
 		{
 			//angle = area.availableTransitions[0].GetAngle();
 			GameObject o = Instantiate(d, area.coordinates.ToVector3() + Vector3.down / 2,
-				Quaternion.Euler(0, angle, 0));
+				Quaternion.Euler(0, angle, 0), paternt);
 
 			generatedObjects.Add(o);
 			// Attach an Area component so we can easily inspect the AreaData in the editor.
