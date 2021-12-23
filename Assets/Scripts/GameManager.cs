@@ -4,16 +4,25 @@ using System.Collections.Generic;
 using Map;
 using UnityEngine;
 
-[RequireComponent(typeof(MapGenerator))]
+// [RequireComponent(typeof(MapGenerator))]
 [RequireComponent(typeof(Spawner))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance = null; // A static reference to the GameManager instance
 
-    public MapGenerator generator;
+    public MapGenerator[] generators;
+
+    public MapGenerator generator
+    {
+        get { return generators[a]; }
+    }
+
     public Spawner spawner;
     private PlayerMovement movement;
 
+    public bool generate;
+    public int a = 0;
+    
     void Awake()
     {
         if(Instance == null) // If there is no instance already
@@ -26,7 +35,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject); // Destroy the GameObject, this component is attached to
         }
         
-        generator = GetComponent<MapGenerator>();
+        // generator = GetComponent<MapGenerator>();
         spawner = GetComponent<Spawner>();
         movement = spawner.mainCharacter.GetComponent<PlayerMovement>();
     }
@@ -39,14 +48,19 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || generate)
         {
-            foreach (GameObject o in generator.generatedObjects)
+            generate = false;
+
+            foreach (MapGenerator mapGenerator in generators)
             {
-                Destroy(o);
+                foreach (GameObject o in mapGenerator.generatedObjects)
+                {
+                    Destroy(o);
+                }
+                mapGenerator.generatedObjects.Clear();
             }
 
-            generator.generatedObjects.Clear();
             generator.Generate();
         }
 
