@@ -43,14 +43,14 @@ namespace Map
 
 		private static Dictionary<int, int> angle2turn3 = new Dictionary<int, int>
 		{
-			{DirectionArrayHash(new [] {W, N}), -90},
-			{DirectionArrayHash(new [] {N, E}), 0},
-			{DirectionArrayHash(new [] {E, S}), 90},
-			{DirectionArrayHash(new [] {S, W}), 180},
-			{DirectionArrayHash(new [] {N, E, S}), 180},
-			{DirectionArrayHash(new [] {E, S, W}), -90},
-			{DirectionArrayHash(new [] {S, W, N}), 0},
-			{DirectionArrayHash(new [] {W, N, E}), 90},
+			{DirectionArrayHash(new [] {W, N}), 180},
+			{DirectionArrayHash(new [] {N, E}), -90},
+			{DirectionArrayHash(new [] {E, S}), 0},
+			{DirectionArrayHash(new [] {S, W}), 90},
+			{DirectionArrayHash(new [] {N, E, S}), 0},
+			{DirectionArrayHash(new [] {E, S, W}), 90},
+			{DirectionArrayHash(new [] {S, W, N}), 180},
+			{DirectionArrayHash(new [] {W, N, E}), -90},
 		};
 
 		/// <summary>
@@ -74,6 +74,8 @@ namespace Map
 		public List<GameObject> generatedObjects;
 
 		public Transform paternt;
+
+		public Transform transformTemplate;
 		
 		static (String, Direction[], Coordinates)[] reactorData =
 #if false
@@ -346,10 +348,14 @@ namespace Map
 
 		private void CreateArea(GameObject d, AreaData area, int angle)
 		{
+			Vector3 angles = transformTemplate.rotation.eulerAngles;
+			angles.y += angle;
+			
 			//angle = area.availableTransitions[0].GetAngle();
 			GameObject o = Instantiate(d, area.coordinates.ToVector3() + Vector3.down / 2,
-				Quaternion.Euler(0, angle, 0), paternt);
-
+				 Quaternion.Euler(angles), paternt);
+			o.transform.localScale = transformTemplate.localScale;
+			
 			generatedObjects.Add(o);
 			// Attach an Area component so we can easily inspect the AreaData in the editor.
 			DebugArea dbArea = o.AddComponent<DebugArea>();
