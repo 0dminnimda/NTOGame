@@ -1,0 +1,168 @@
+fileFormatVersion: 2
+guid: 428b5712b46addb419618b99264e6905
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: -4167878890196706185
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E"
+  - first:
+      74: -546122298175946801
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E.001"
+  - first:
+      74: -8882889599257114079
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E.002"
+  - first:
+      74: -3742092186142054967
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E.003"
+  - first:
+      74: 1824015731875346710
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.002|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442"
+  - first:
+      74: 5178227246629631156
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E"
+  - first:
+      74: 8380832364840110066
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E.001"
+  - first:
+      74: -6745643198024103124
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E.002"
+  - first:
+      74: 2219475815948823613
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E.003"
+  - first:
+      74: -5816355040389415946
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.004|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442"
+  - first:
+      74: -2451062726936322163
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E"
+  - first:
+      74: 2582535064873880435
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E.001"
+  - first:
+      74: -5764968158592314231
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E.002"
+  - first:
+      74: 8178888803392144193
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E.003"
+  - first:
+      74: 5618541271057869243
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E.004"
+  - first:
+      74: 2347835197543499363
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.007|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442"
+  - first:
+      74: -3114202192490735939
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E"
+  - first:
+      74: 2986368559253282044
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E.001"
+  - first:
+      74: -4396020528725047907
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E.002"
+  - first:
+      74: 8415219530290116675
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E.003"
+  - first:
+      74: -8261877497234696483
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E.004"
+  - first:
+      74: 3091231010963498202
+    second: "\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442\u044C.016|\u041F\u043B\u043E\u0441\u043A\u043E\u0441\u0442"
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
