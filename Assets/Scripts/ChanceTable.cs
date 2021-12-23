@@ -33,7 +33,7 @@ public class ChanceTable
 
     public int GetRandomIndex()
     {
-        int ind = Array.BinarySearch(table, (uint)Random.Range(1, lastValue));
+        int ind = Array.BinarySearch(table, (uint)Random.Range(1, lastValue + 1));
         if (ind < 0)
             ind = ~ind;
 
