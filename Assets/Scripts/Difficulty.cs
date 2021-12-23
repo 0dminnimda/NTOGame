@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,6 @@ public class Difficulty : MonoBehaviour, DifficultyCurve
     
     public float GetDifficulty(int x)
     {
-        return a * x;
+        return a * (x + 1);
     }
 }
