@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Radiation
 {
-    public class Wall : MonoBehaviour
+    public class RadiationBarrier : MonoBehaviour
     {
         public float radiationDecrement;
 

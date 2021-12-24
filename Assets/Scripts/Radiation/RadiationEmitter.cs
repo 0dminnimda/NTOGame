@@ -110,10 +110,10 @@ namespace Radiation
                 debugHitPoints.Add(hit.point);
                 // debug
 
-                Wall wall = hit.transform.gameObject.GetComponent<Wall>();
-                if (wall != null)
+                RadiationBarrier radiationBarrier = hit.transform.gameObject.GetComponent<RadiationBarrier>();
+                if (radiationBarrier != null)
                 {
-                    currentRadiationLevel -= wall.radiationDecrement;
+                    currentRadiationLevel -= radiationBarrier.radiationDecrement;
                 }
                 else
                 {
