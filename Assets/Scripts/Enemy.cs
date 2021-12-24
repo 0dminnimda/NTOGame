@@ -1,10 +1,28 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Enemy : MonoBehaviour
 {
-    private void FixedUpdate()
+    private NavMeshAgent agent;
+
+    void Awake()
     {
-        transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, .05f);
+        agent = GetComponent<NavMeshAgent>();    
     }
+
+    public void MoveToLocation(Vector3 targetPoint)
+    {
+        agent.destination = targetPoint;
+        // agent.isStopped = false;
+    }
+
+    private void Update()
+    {
+        if (agent.remainingDistance <= 0.5f)
+            Destroy(gameObject);
+    }
+
+    // public void StartMovingTowards
 }
