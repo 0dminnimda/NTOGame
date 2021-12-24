@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1df82fb2ce540e2abb4437e7a551ab9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iterations: 200
+  iterations: 300
   areaOne:
   - {fileID: 9103925317890349649, guid: e673d647ef969a743b4bb36efff4909e, type: 3}
   - {fileID: 6609244219953912645, guid: 1eea29a1861d16749bde720583b32fc0, type: 3}
@@ -245,6 +245,7 @@ MonoBehaviour:
   - {fileID: 5160925266171109266, guid: 9fe391d304b723b418887bb959b2676d, type: 3}
   reactor: {fileID: 4119895007986607339, guid: a6f30ca7a515cab47b148e7787348048, type: 3}
   generatedObjects: []
+  surface: {fileID: 1334306701}
   paternt: {fileID: 1334306697}
   transformTemplate: {fileID: 1311537880}
 --- !u!1 &1311537879
@@ -317,6 +318,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1334306697}
+  - component: {fileID: 1334306701}
+  - component: {fileID: 1334306702}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -340,6 +343,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1334306701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334306696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.033333335
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
+--- !u!114 &1334306702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334306696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df044d32bd9cb5e43873e0bbdad0c5fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surface: {fileID: 1334306701}
 --- !u!1 &1492001467
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +454,7 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: d8706a28a5b7b5f4492f75fc351066c3, type: 3}
   reactor: {fileID: 5273669840679095721, guid: 7458389df657ebe4b9592174dab7a37d, type: 3}
   generatedObjects: []
+  surface: {fileID: 1334306701}
   paternt: {fileID: 1334306697}
   transformTemplate: {fileID: 1832126311}
 --- !u!1 &1832126310
@@ -472,6 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   a: 1.5
+  b: 0
 --- !u!4 &1833773971
 Transform:
   m_ObjectHideFlags: 0
@@ -504,13 +552,16 @@ MonoBehaviour:
   minDist: 33
   enemies:
   - {fileID: 8542989670393275323, guid: 4dba0e933adfe3a40bac4f4bc788bd21, type: 3}
+  - {fileID: 7263076900211294531, guid: c605ceda59f74934eb88c3c434fd06f2, type: 3}
   - {fileID: 6707333304160638940, guid: b31dfac414abf864cbbf6579c4aec9e9, type: 3}
   - {fileID: 4146440205680352782, guid: a4d5e0f657e56f247a51048128cd0388, type: 3}
+  - {fileID: 2590317253659797473, guid: c849fdc775912674e854ab540c3e0d32, type: 3}
   difficultyCurve: {fileID: 1833773970}
-  timeBeforeFirstWave: 10
-  timeBetweenWaves: 5
+  timeBeforeFirstWave: 0
+  timeBetweenWaves: 10
   waveCountdown: 0
   waveInd: 0
+  enemyGoal: {x: 0.5, y: -0.5, z: 0.5}
 --- !u!114 &1833773973
 MonoBehaviour:
   m_ObjectHideFlags: 0
