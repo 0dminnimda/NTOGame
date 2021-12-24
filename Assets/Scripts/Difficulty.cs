@@ -11,9 +11,10 @@ public interface DifficultyCurve
 public class Difficulty : MonoBehaviour, DifficultyCurve
 {
     public float a;
+    public float b;
     
     public float GetDifficulty(int x)
     {
-        return a * (x + 1);
+        return a * (x + 1) + b;
     }
 }
