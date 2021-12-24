@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 using static Map.Direction;
 using static Map.DirectionExt;
 using Random = UnityEngine.Random;
@@ -72,7 +73,8 @@ namespace Map
 		private GameObject reactor;
 		
 		public List<GameObject> generatedObjects;
-
+		public NavMeshSurface surface;
+		
 		public Transform paternt;
 
 		public Transform transformTemplate;
@@ -243,6 +245,8 @@ namespace Map
 			}
 
 			CreateMeshes();
+			
+			surface.BuildNavMesh();
 		}
 
 
