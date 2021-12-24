@@ -16,14 +16,15 @@ using UnityEngine;
 //     DownRight = Down & Right,
 // } 
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody rb;
     public float movementSpeed = 5f;
     public float rotationSpeed = 5f;
 
-    private static Vector3 rotationAxis = Vector3.up;
-
+    public Transform model;
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     public void UpdatePlayer()
     {
         // Input.GetAxis("Mouse X")
-        // transform.Rotate(rotationAxis, Input.GetAxis("Mouse X") * Time.deltaTime * rotationSpeed);
+        // transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * Time.deltaTime * rotationSpeed);
 
         // Input.GetAxis("Horizontal")
         //Store user input as a movement vector
@@ -41,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
 
         //Apply the movement vector to the current position, which is
         //multiplied by deltaTime and speed for a smooth MovePosition
-        rb.MovePosition(transform.position + movement * Time.deltaTime * movementSpeed);
+        Vector3 newPos = transform.position + movement * Time.deltaTime * movementSpeed;
+        model.LookAt(newPos);
+        rb.MovePosition(newPos);
     }
 }
