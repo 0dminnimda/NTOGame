@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Map;
+using Unity.AI.Navigation;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -48,32 +49,48 @@ public class Spawner : MonoBehaviour
     public float waveCountdown;
     private bool spawningWave = false;
     public int waveInd;
+
+    public Vector3 enemyGoal;
     
     void Awake()
     {
-        var table1 = new ChanceTable(new uint[] {10, 5, 0});
-        var table2 = new ChanceTable(new uint[] {7, 7, 2});
-        var table3 = new ChanceTable(new uint[] {10, 10, 5});
+        var table1 = new ChanceTable(new uint[] {10, 3,  0,  0,  0});
+        var table2 = new ChanceTable(new uint[] {7,  7,  3,  0,  0});
+        var table3 = new ChanceTable(new uint[] {5,  10, 5,  3,  0});
+        var table4 = new ChanceTable(new uint[] {3,  7,  7,  5,  3});
+        var table5 = new ChanceTable(new uint[] {0,  5,  10, 7,  5});
+        var table6 = new ChanceTable(new uint[] {0,  3,  7,  10, 7});
+        var table7 = new ChanceTable(new uint[] {0,  0,  5,  7,  10});
         
         waves = new[]
         {
-            new Wave(table1, 0.5f),
-            new Wave(table1, 0.4f),
             new Wave(table1, 0.3f),
             new Wave(table1, 0.2f),
             new Wave(table1, 0.1f),
 
-            new Wave(table2, 0.5f),
-            new Wave(table2, 0.4f),
             new Wave(table2, 0.3f),
             new Wave(table2, 0.2f),
             new Wave(table2, 0.1f),
 
-            new Wave(table3, 0.5f),
-            new Wave(table3, 0.4f),
             new Wave(table3, 0.3f),
             new Wave(table3, 0.2f),
             new Wave(table3, 0.1f),
+            
+            new Wave(table4, 0.3f),
+            new Wave(table4, 0.2f),
+            new Wave(table4, 0.1f),
+            
+            new Wave(table5, 0.3f),
+            new Wave(table5, 0.2f),
+            new Wave(table5, 0.1f),
+            
+            new Wave(table6, 0.3f),
+            new Wave(table6, 0.2f),
+            new Wave(table6, 0.1f),
+            
+            new Wave(table7, 0.3f),
+            new Wave(table7, 0.2f),
+            new Wave(table7, 0.1f),
         };
     }
     
@@ -108,8 +125,6 @@ public class Spawner : MonoBehaviour
 
         foreach (var area in generator.generatedAreas)
         {
-            int angle;
-            GameObject d;
             if (area.Type() == AreaType.One)
             {
                 Vector3 position = area.coordinates.ToVector3();
@@ -133,6 +148,8 @@ public class Spawner : MonoBehaviour
         enemySpawnPositions = positions.ToArray();
         waveInd = 0;
         waveCountdown = timeBeforeFirstWave;
+
+        NavMeshSurface surface = generator.paternt.GetComponent<NavMeshSurface>();
 
         // var table = new uint[enemies.Length];
         // for (var i = 0; i < enemies.Length; i++)
@@ -173,7 +190,9 @@ public class Spawner : MonoBehaviour
         Wave wave = GetWave();
         for (int i = 0; i < MaxNumberOfEnemies(); i++)
         {
-            Destroy(SpawnEnemy(i, wave), 4f);
+            GameObject o = SpawnEnemy(i, wave);
+            o.GetComponent<Enemy>().MoveToLocation(enemyGoal);
+            // Destroy(o, 4f);
             yield return new WaitForSeconds( wave.delay );
         }
 
