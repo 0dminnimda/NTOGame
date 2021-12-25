@@ -62,9 +62,12 @@ public class GameManager : MonoBehaviour
             }
 
             generator.Generate();
+            spawner.StartSpawn();
         }
-
-        spawner.UpdateSpawn();
+        else
+        {
+            spawner.UpdateSpawn();
+        }
     }
 
     private void FixedUpdate()
