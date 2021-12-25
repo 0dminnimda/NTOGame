@@ -24,21 +24,45 @@ namespace Map
 			// full fours
 			new AreaData("N E S W", new[] {N, E, S, W}),
 			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
+			new AreaData("N E S W", new[] {N, E, S, W}),
 
 			// triplets
 			new AreaData("N E S", new[] {N, E, S}),
+			new AreaData("N E S", new[] {N, E, S}),
+			new AreaData("E S W", new[] {E, S, W}),
 			new AreaData("E S W", new[] {E, S, W}),
 			new AreaData("S W N", new[] {S, W, N}),
+			new AreaData("S W N", new[] {S, W, N}),
+			new AreaData("W N E", new[] {W, N, E}),
 			new AreaData("W N E", new[] {W, N, E}),
 
 			// turns
 			new AreaData("W N", new[] {W, N}),
+			new AreaData("W N", new[] {W, N}),
+			new AreaData("N E", new[] {N, E}),
 			new AreaData("N E", new[] {N, E}),
 			new AreaData("E S", new[] {E, S}),
+			new AreaData("E S", new[] {E, S}),
+			new AreaData("S W", new[] {S, W}),
 			new AreaData("S W", new[] {S, W}),
 
 			// straight paths
 			new AreaData("E W", new[] {E, W}),
+			new AreaData("E W", new[] {E, W}),
+			new AreaData("N S", new[] {N, S}),
 			new AreaData("N S", new[] {N, S}),
 		};
 
