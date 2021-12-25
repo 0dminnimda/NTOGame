@@ -64,32 +64,32 @@ public class Spawner : MonoBehaviour
         
         waves = new[]
         {
-            new Wave(table1, 0.3f),
-            new Wave(table1, 0.2f),
+            // new Wave(table1, 0.3f),
+            // new Wave(table1, 0.2f),
             new Wave(table1, 0.1f),
 
-            new Wave(table2, 0.3f),
-            new Wave(table2, 0.2f),
+            // new Wave(table2, 0.3f),
+            // new Wave(table2, 0.2f),
             new Wave(table2, 0.1f),
 
-            new Wave(table3, 0.3f),
-            new Wave(table3, 0.2f),
+            // new Wave(table3, 0.3f),
+            // new Wave(table3, 0.2f),
             new Wave(table3, 0.1f),
             
-            new Wave(table4, 0.3f),
-            new Wave(table4, 0.2f),
+            // new Wave(table4, 0.3f),
+            // new Wave(table4, 0.2f),
             new Wave(table4, 0.1f),
             
-            new Wave(table5, 0.3f),
-            new Wave(table5, 0.2f),
+            // new Wave(table5, 0.3f),
+            // new Wave(table5, 0.2f),
             new Wave(table5, 0.1f),
             
-            new Wave(table6, 0.3f),
-            new Wave(table6, 0.2f),
+            // new Wave(table6, 0.3f),
+            // new Wave(table6, 0.2f),
             new Wave(table6, 0.1f),
             
-            new Wave(table7, 0.3f),
-            new Wave(table7, 0.2f),
+            // new Wave(table7, 0.3f),
+            // new Wave(table7, 0.2f),
             new Wave(table7, 0.1f),
         };
     }
@@ -199,11 +199,19 @@ public class Spawner : MonoBehaviour
         spawningWave = false;
     }
 
+    public GameObject toOff;
+    public GameObject toOn;
+
     Wave GetWave()
     {
         if (waveInd >= waves.Length)
+        {
+            toOff.SetActive(false);
+            toOn.SetActive(true);
+            Time.timeScale = 0;
             return waves[waves.Length - 1];
-        
+        }
+
         return waves[waveInd];
     }
 

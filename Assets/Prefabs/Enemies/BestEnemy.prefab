@@ -12,7 +12,10 @@ GameObject:
   - component: {fileID: 4295353122601517181}
   - component: {fileID: 1184078666595563660}
   - component: {fileID: 1862199497993916231}
-  m_Layer: 0
+  - component: {fileID: 658262378510216623}
+  - component: {fileID: 1445368212949668616}
+  - component: {fileID: -5721795415351517111}
+  m_Layer: 6
   m_Name: BestEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,6 +88,44 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: de17a5259188edc4692e19beedf3a4d3, type: 2}
+--- !u!65 &658262378510216623
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590317253659797473}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.4, y: 1.1, z: 1.4}
+  m_Center: {x: 0, y: 0.55, z: 0}
+--- !u!114 &1445368212949668616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590317253659797473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4423ee0f8787c449cd36c9414673a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthPoints: 500
+--- !u!114 &-5721795415351517111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590317253659797473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a78b3193ee04f8459828d0ef0fef7c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8655847639944502531
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -143,6 +184,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}
       propertyPath: m_Name
       value: Slime_small_move
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}

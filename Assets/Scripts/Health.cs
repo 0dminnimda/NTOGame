@@ -8,8 +8,14 @@ public class Health : MonoBehaviour
     private float _healthPoints;
     public float healthPoints { get => _healthPoints; }
 
-    void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         _healthPoints -= damage;
+
+        if (_healthPoints <= 0)
+        {
+            Destroy(gameObject);
+            Debug.Log("Died");
+        }
     }
 }

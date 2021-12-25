@@ -20,8 +20,9 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (agent.remainingDistance <= 0.5f)
-            Destroy(gameObject);
+        if (agent.isOnNavMesh)
+            if (agent.remainingDistance <= 0.5f)
+                Destroy(gameObject);
     }
 
     // public void StartMovingTowards
