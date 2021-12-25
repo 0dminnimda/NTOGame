@@ -465,6 +465,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   core: {fileID: 4160015644428681019}
+  turnSpeed: 2
+  rotationSpeed: 20
+  timeBetweenTurns: 2
+  turning: 0
+  initialized: 0
 --- !u!1 &4347097092056065706
 GameObject:
   m_ObjectHideFlags: 0
