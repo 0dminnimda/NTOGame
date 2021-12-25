@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject[] turets;
+    public Inventory inventory;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
+            Instantiate(inventory.GetItem(inventory.selected).prefub, transform.position, Quaternion.identity);
         }
     }
 }
