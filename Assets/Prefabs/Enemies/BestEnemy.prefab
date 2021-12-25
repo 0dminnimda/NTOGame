@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2974873257721502591}
   - component: {fileID: 4295353122601517181}
   - component: {fileID: 1184078666595563660}
+  - component: {fileID: 1862199497993916231}
   m_Layer: 0
   m_Name: BestEnemy
   m_TagString: Untagged
@@ -67,6 +68,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3d5d1d5eb3468dad783826d1076c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1862199497993916231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590317253659797473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 0
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: de17a5259188edc4692e19beedf3a4d3, type: 2}
 --- !u!1001 &8655847639944502531
 PrefabInstance:
   m_ObjectHideFlags: 0
