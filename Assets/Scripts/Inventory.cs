@@ -62,12 +62,12 @@ public class Inventory : MonoBehaviour
         texts[ind].text = items[ind].amount.ToString();
     }
 
-    InventoryItem GetItem(int ind)
+    public InventoryItem GetItem(int ind)
     {
         return items[ind];
     }
     
-    void SetItem(int ind, InventoryItem item)
+    public void SetItem(int ind, InventoryItem item)
     {
         items[ind] = item;
         UpdateUIItem(ind);
@@ -99,7 +99,7 @@ public class Inventory : MonoBehaviour
         Select(ind);
     }
 
-    private int selected;
+    public int selected;
     
     void Select(int ind)
     {
