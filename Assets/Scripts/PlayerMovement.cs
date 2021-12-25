@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
 
         //Apply the movement vector to the current position, which is
         //multiplied by deltaTime and speed for a smooth MovePosition
-        Vector3 newPos = transform.position + movement * Time.deltaTime * movementSpeed;
+        Vector3 newPos = transform.position + movement * Time.fixedDeltaTime * movementSpeed;
         model.LookAt(newPos);
         rb.MovePosition(newPos);
     }
