@@ -269,6 +269,8 @@ namespace Map
 			}
 
 			CreateMeshes();
+
+			// CombineAreasToOneMesh();
 			
 			surface.BuildNavMesh();
 		}
@@ -427,6 +429,40 @@ namespace Map
 			// 	transition.transform.localScale = scale;
 			// 	transition.transform.SetParent(o.transform, true);
 			// }
+		}
+
+		void CombineAreasToOneMesh()
+		{
+			MeshFilter[] meshFilters = paternt.GetComponentsInChildren<MeshFilter>();
+			List<MeshFilter> meshFiltersL = new List<MeshFilter>(meshFilters.Length - 1);
+			foreach (var t in meshFilters)
+				if (t != null && t.mesh != null)
+					meshFiltersL.Add(t);
+
+			CombineInstance[] combine = new CombineInstance[meshFiltersL.Count];
+
+			for (var i = 0; i < meshFiltersL.Count; i++)
+			{
+				combine[i].mesh = meshFiltersL[i].sharedMesh;
+				combine[i].transform = meshFiltersL[i].transform.localToWorldMatrix;
+				meshFilters[i].gameObject.SetActive(false);
+			}
+
+			// int i = 0;
+			// while (i < meshFilters.Length)
+			// {
+			// 	combine[i].mesh = meshFilters[i].sharedMesh;
+			// 	combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+			// 	meshFilters[i].gameObject.SetActive(false);
+			//
+			// 	i++;
+			// }
+			
+			MeshFilter mf = paternt.GetComponent<MeshFilter>();
+			mf.mesh = new Mesh();
+			mf.mesh.CombineMeshes(combine);
+			paternt.GetComponent<MeshCollider>().sharedMesh = mf.mesh;
+			paternt.gameObject.SetActive(true);
 		}
 	}
 }
