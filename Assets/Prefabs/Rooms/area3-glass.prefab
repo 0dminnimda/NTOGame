@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5651340076651682176}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 393786000263471731}
   - component: {fileID: 2807286735962597923}
   - component: {fileID: 1904778173685265132}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 4823944326817619789}
   - component: {fileID: 3177418972458793797}
   - component: {fileID: 4561817089976737182}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 2508040124917676262}
   - component: {fileID: 211389218298049295}
   - component: {fileID: 4113651106633230057}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 8761571016895865040}
   - component: {fileID: 7823041441294833114}
   - component: {fileID: 9040507987605775257}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +476,7 @@ GameObject:
   - component: {fileID: 7722215159848022145}
   - component: {fileID: 1444518446245503807}
   - component: {fileID: 3042991126921683492}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 5237794507843516375}
   - component: {fileID: 4968987945385842207}
   - component: {fileID: 269705938707987951}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Galss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +694,7 @@ GameObject:
   - component: {fileID: 2026141265043269411}
   - component: {fileID: 86097080425764195}
   - component: {fileID: 1261451752857290681}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ GameObject:
   - component: {fileID: 2368933090904132206}
   - component: {fileID: 1201417216271839483}
   - component: {fileID: 8039335122878075829}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cylinder (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -913,7 +913,7 @@ GameObject:
   - component: {fileID: 7256178578678181253}
   - component: {fileID: 918781685979308459}
   - component: {fileID: 3618571361369139456}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1018,7 +1018,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8136961879345300651}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: area3-glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1054,7 +1054,7 @@ GameObject:
   - component: {fileID: 6124546969221419872}
   - component: {fileID: 4667417751054109409}
   - component: {fileID: 8858982584887936853}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1163,7 +1163,7 @@ GameObject:
   - component: {fileID: 5513209275343712137}
   - component: {fileID: 937084666081505710}
   - component: {fileID: 5981135978087756077}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
