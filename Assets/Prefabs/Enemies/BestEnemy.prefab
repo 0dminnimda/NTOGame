@@ -42,11 +42,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 2590317253659797473}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Radius: 0.4
+  m_Speed: 2
+  m_Acceleration: 9
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 60
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -121,7 +121,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a8fc47f9622166b4eac9726a2bd7749b, type: 2}
+      objectReference: {fileID: 2100000, guid: 6a44be6915e93ac49b4596171ddc2e16, type: 2}
     - target: {fileID: 919132149155446097, guid: 09e19404cdfee18449cd0f3960d19c1d, type: 3}
       propertyPath: m_Name
       value: Slime_small_move
