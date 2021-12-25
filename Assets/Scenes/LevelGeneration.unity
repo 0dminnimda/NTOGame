@@ -2004,15 +2004,15 @@ MonoBehaviour:
   - name: DowbleGunTurret
     prefub: {fileID: 919132149155446097, guid: 8dbdb9ba7a90fad4aae0c606aa6ef62b, type: 3}
     image: {fileID: 21300000, guid: 3f692b4e7dc85914ab59feeeaca1ac4d, type: 3}
-    amount: 2
+    amount: 1
   - name: LaserTurret
     prefub: {fileID: 919132149155446097, guid: 3e8ee208e74a61146aaa6d592d239ed0, type: 3}
     image: {fileID: 21300000, guid: a5dbe0793c5c0c64881c5e448c8741f1, type: 3}
-    amount: 3
+    amount: 1
   - name: Loot
-    prefub: {fileID: 919132149155446097, guid: 8dbdb9ba7a90fad4aae0c606aa6ef62b, type: 3}
-    image: {fileID: 21300000, guid: 3f692b4e7dc85914ab59feeeaca1ac4d, type: 3}
-    amount: 4
+    prefub: {fileID: 4250616658129103626, guid: d793d72d4f7d0cd4a908a73d0e5e7d0a, type: 3}
+    image: {fileID: 21300000, guid: 88374cf03a2483d43a3741d040ef454e, type: 3}
+    amount: 1
   uiItem: []
   texts:
   - {fileID: 327581144}
@@ -2020,6 +2020,7 @@ MonoBehaviour:
   - {fileID: 343580734}
   - {fileID: 1368974869}
   t: {fileID: 1492821051}
+  selected: 0
 --- !u!114 &1924255607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2032,7 +2033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e5c578a2da7a84fb9bc08508b7aeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turets: []
+  inventory: {fileID: 1924255606}
 --- !u!4 &1924255608
 Transform:
   m_ObjectHideFlags: 0
