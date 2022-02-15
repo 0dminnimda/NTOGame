@@ -2059,6 +2059,7 @@ MonoBehaviour:
   - {fileID: 6707333304160638940, guid: b31dfac414abf864cbbf6579c4aec9e9, type: 3}
   - {fileID: 4146440205680352782, guid: a4d5e0f657e56f247a51048128cd0388, type: 3}
   - {fileID: 2590317253659797473, guid: c849fdc775912674e854ab540c3e0d32, type: 3}
+  spawnedEnemies: []
   difficultyCurve: {fileID: 1833773970}
   timeBeforeFirstWave: 0
   timeBetweenWaves: 10
@@ -2174,15 +2175,15 @@ MonoBehaviour:
   - name: BombTurret
     prefub: {fileID: 976691118217872331, guid: 059834934902a874f9fb3abb6c803f8d, type: 3}
     image: {fileID: 21300000, guid: 59025d61b8058e54bb6681598714f42e, type: 3}
-    amount: 1
+    amount: 0
   - name: DowbleGunTurret
     prefub: {fileID: 919132149155446097, guid: 8dbdb9ba7a90fad4aae0c606aa6ef62b, type: 3}
     image: {fileID: 21300000, guid: 3f692b4e7dc85914ab59feeeaca1ac4d, type: 3}
     amount: 0
   - name: LaserTurret
-    prefub: {fileID: 919132149155446097, guid: 3e8ee208e74a61146aaa6d592d239ed0, type: 3}
+    prefub: {fileID: 8707628139223628384, guid: 013ffff8a4dcb38438caf0e93ceba4e0, type: 3}
     image: {fileID: 21300000, guid: a5dbe0793c5c0c64881c5e448c8741f1, type: 3}
-    amount: 0
+    amount: 10
   - name: Loot
     prefub: {fileID: 4250616658129103626, guid: d793d72d4f7d0cd4a908a73d0e5e7d0a, type: 3}
     image: {fileID: 21300000, guid: 88374cf03a2483d43a3741d040ef454e, type: 3}
