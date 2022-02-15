@@ -70,9 +70,9 @@ public class TurretController : MonoBehaviour
     public void PointAt(Vector3 point)
     {
         TurnOneThing(point, verticalMovingPart, turningSpeed, minVerticalTurnAngle,
-            verticalMovingPart.parent.right);
+                     verticalMovingPart.right);
 
         TurnOneThing(point, horisontalMovingPart, turningSpeed, minHorisontalTurnAngle,
-               horisontalMovingPart.parent.up);
+                     horisontalMovingPart.up);
     }
 }
