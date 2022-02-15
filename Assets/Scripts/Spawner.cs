@@ -187,7 +187,9 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnEnemies()
     {
         spawningWave = true;
-        
+
+        RemoveDestroyedEnemies();
+
         Wave wave = GetWave();
         for (int i = 0; i < MaxNumberOfEnemies(); i++)
         {
@@ -196,6 +198,8 @@ public class Spawner : MonoBehaviour
             // Destroy(o, 4f);
             yield return new WaitForSeconds( wave.delay );
         }
+
+        RemoveDestroyedEnemies();
 
         spawningWave = false;
     }
@@ -214,6 +218,44 @@ public class Spawner : MonoBehaviour
         }
 
         return waves[waveInd];
+    }
+
+    public GameObject GetClosestEnemy(Vector3 point)
+    {
+        RemoveDestroyedEnemies();
+
+        // Vector3 nearestPosition = Vector3.zero;
+        GameObject nearest = null;
+        float nearestDistance = float.PositiveInfinity;
+        int instancesCount = spawnedEnemies.Count;
+        int i = 0;
+        // if (instancesCount > 0)
+        // {
+        //     nearest = spawnedEnemies[0];
+        //     nearestPosition = nearest._transform.position;
+        //     nearestDistance = Vector3.Distance(point, nearestPosition);
+        //     i = 1;
+        // }
+        for (; i < instancesCount; i++)
+        {
+            GameObject next = spawnedEnemies[i];
+            Vector3 nextPosition = next.transform.position;
+            float dist = (point - nextPosition).sqrMagnitude;
+            // float dist = Vector3.Distance(point, nextPosition);
+            if (dist < nearestDistance)
+            {
+                nearest = next;
+                // nearestPosition = next.transform.position;
+                nearestDistance = dist;
+            }
+        }
+
+        return nearest;
+    }
+
+    void RemoveDestroyedEnemies()
+    {
+        spawnedEnemies.RemoveAll(s => s == null);
     }
 
     GameObject SpawnEnemy(int ind, Wave wave)
