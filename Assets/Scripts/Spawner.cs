@@ -27,6 +27,7 @@ public class Spawner : MonoBehaviour
     // }
 
     public GameObject[] enemies;
+    public List<GameObject> spawnedEnemies = new List<GameObject>();
 
     public Difficulty difficultyCurve;
 
@@ -51,7 +52,7 @@ public class Spawner : MonoBehaviour
     public int waveInd;
 
     public Vector3 enemyGoal;
-    
+
     void Awake()
     {
         var table1 = new ChanceTable(new uint[] {10, 3,  0,  0,  0});
@@ -182,7 +183,7 @@ public class Spawner : MonoBehaviour
         else
             waveCountdown -= Time.deltaTime;
     }
-    
+
     IEnumerator SpawnEnemies()
     {
         spawningWave = true;
@@ -219,9 +220,12 @@ public class Spawner : MonoBehaviour
     {
         Vector3 pos = enemySpawnPositions[Random.Range(0, enemySpawnPositions.Length)];
 
-        return Instantiate(wave.table.GetRandomItem(ref enemies), pos, Quaternion.identity);
+        var enemy = Instantiate(wave.table.GetRandomItem(ref enemies), pos, Quaternion.identity);
+        spawnedEnemies.Add(enemy);
+
+        return enemy;
     }
-    
+
     float MaxNumberOfEnemies()
     {
         return difficultyCurve.GetDifficulty(waveInd);
