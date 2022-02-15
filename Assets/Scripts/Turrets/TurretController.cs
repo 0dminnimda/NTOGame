@@ -10,10 +10,12 @@ public class TurretController : MonoBehaviour
     public float turningSpeed = 1.0f;
     public Transform point;
 
+    public bool updateItself = true;
+
     [Header("Vertical")]
     public Transform verticalMovingPart;
     public float minVerticalTurnAngle = 0.02f;
-    
+
     private float verticalAngle;
     private Vector3 originalVerticalEulerAngles;
 
@@ -29,6 +31,12 @@ public class TurretController : MonoBehaviour
     }
 
     private void Update()
+    {
+        if (updateItself)
+            UpdateItself();
+    }
+
+    public void UpdateItself()
     {
         PointAt(point.position);
     }
