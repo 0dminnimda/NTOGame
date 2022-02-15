@@ -512,6 +512,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3147489258070357367}
   - component: {fileID: 8624353409239121682}
+  - component: {fileID: 5103741421408567078}
   m_Layer: 0
   m_Name: LaserTurret
   m_TagString: Untagged
@@ -546,6 +547,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b04a652c160363b4bbcc07a97822fdad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticalMovingPart: {fileID: 4320277431353507995}
-  horisontalMovingPart: {fileID: 3658831510482785521}
+  turningSpeed: 1
   point: {fileID: 0}
+  updateItself: 1
+  verticalMovingPart: {fileID: 4320277431353507995}
+  minVerticalTurnAngle: 0.2
+  horisontalMovingPart: {fileID: 3658831510482785521}
+  minHorisontalTurnAngle: 0.2
+--- !u!114 &5103741421408567078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707628139223628384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0854ada9b53e8b644adb08bbe0185e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretController: {fileID: 8624353409239121682}
+  loopUpDelay: 0.1
