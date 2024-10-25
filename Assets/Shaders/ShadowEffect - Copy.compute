@@ -1,0 +1,178 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+// #pragma enable_d3d11_debug_symbols
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+#define LEN 4
+struct Ray
+{
+    float2 v;
+    uint ptsUsed;
+};
+
+struct Point
+{
+    float2 v;
+    float radiationLvl;
+};
+
+// ChangeEveryFrame
+StructuredBuffer<Ray> rays;
+StructuredBuffer<Point> points;
+
+cbuffer BasicallyUnchangable
+{
+    RWTexture2D<float4> result;
+    
+    float resolution;
+    float scalar;
+
+    float4 filling;
+    float4 defaultColor;
+    float4 transparent;
+
+    float maxDistance;
+    float initRadLvl;
+    float minAmountOfAlpha;
+}
+
+float sqrDistance(float2 a, float2 b = float2(0.0, 0.0))
+{
+    float2 v = a - b;
+    return v.x * v.x + v.y * v.y;
+}
+
+int binSearch(float2 T)
+{
+    uint n,  _;
+    rays.GetDimensions(n, _);
+
+    uint L = 0;
+    uint R = n - 1;
+
+    while (L < R + 1)
+    {
+        const uint m = floor((L + R) / 2);
+        float2 v = rays[m].v;
+        if (cross(float3(v.x, v.y, 0.0), float3(T.x, T.y, 0.0)).z > 0)
+            L = m + 1;
+        else
+            R = m - 1;
+    }
+    return L - 1;
+}
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    // get pixelPosition
+    float2 pixelPosition = id - resolution / 2 + 0.5;
+    pixelPosition /= scalar;
+
+    // circle borders
+    const float pixelDistance = sqrDistance(pixelPosition);
+    if (pixelDistance > maxDistance)
+    {
+        result[id.xy] = transparent;
+        return;
+    }
+
+    float4 color = defaultColor;
+    const int rayInd = binSearch(pixelPosition);
+
+    const int aInd = rayInd;
+    const int bInd = rayInd + 1;
+
+    const Ray a = rays[aInd];
+    const Ray b = rays[bInd];
+
+    float radLvl = initRadLvl;
+
+    if (a.ptsUsed == 0 && b.ptsUsed == 0)
+    {
+        // no intersections, pass
+    }
+    else if (a.ptsUsed == 0 || b.ptsUsed == 0)
+    {
+        // one ray have no intersections, another - more than 0
+
+        const int curInd = a.ptsUsed == 0 ? bInd : aInd;
+        const uint used = a.ptsUsed == 0 ? b.ptsUsed : a.ptsUsed;
+        int ind = used - 1;
+
+        for (uint i = 0; i < used; i++)
+        {
+            if (pixelDistance < sqrDistance(points[curInd*LEN + i].v))
+            {
+                ind = i - 1;
+                break;
+            }
+        }
+
+        if (ind >= 0)
+        {
+            radLvl = points[curInd*LEN + ind].radiationLvl;
+            color = (filling + defaultColor) / 2;
+        }
+    }
+    else
+    {
+        // both rays have intersections
+
+        uint i;
+            
+        int aResInd = a.ptsUsed - 1;
+        for (i = 0; i < a.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[aInd*LEN + i].v))
+            {
+                aResInd = i - 1;
+                break;
+            }
+        }
+
+        int bResInd = b.ptsUsed - 1;
+        for (i = 0; i < b.ptsUsed; i++)
+        {
+            if (pixelDistance < sqrDistance(points[bInd*LEN + i].v))
+            {
+                bResInd = i - 1;
+                break;
+            }
+        }
+        
+        if (aResInd >= 0)
+        {
+            if (bResInd >= 0)
+            {
+                // two points after pixel
+                radLvl = (points[aInd*LEN + aResInd].radiationLvl +
+                          points[bInd*LEN + bResInd].radiationLvl) / 2;
+                color = filling;
+            }
+            else
+            {
+                // one point after pixel
+                radLvl = points[aInd*LEN + aResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+        }
+        else
+        {
+            if (bResInd >= 0)
+            {
+                // one point after pixel
+                radLvl = points[bInd*LEN + bResInd].radiationLvl;
+                color = (filling + defaultColor) / 2;
+            }
+            // no points after pixel, do nothing
+        }
+    }
+
+    // farther the point less alpha channel
+    color.w = (radLvl / initRadLvl) - (pixelDistance / maxDistance / 1.5);
+    if (color.w < minAmountOfAlpha)
+        color.w = minAmountOfAlpha;
+    result[id.xy] = color;
+}

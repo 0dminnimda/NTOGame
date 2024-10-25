@@ -48,14 +48,20 @@ public class TurretController : MonoBehaviour
     }
 
     private void TurnOneThing(
-        Vector3 point, Transform transform, float turningSpeed, float minTurnAngle, Vector3 normal)
+        Vector3 point, Transform transform, float turningSpeed, float minTurnAngle, Vector3 normal/*, bool b*/)
     {
         // Determine which direction to rotate towards
         Vector3 targetDirection = transform.parent.InverseTransformDirection(
             Vector3.ProjectOnPlane(point - transform.position, normal));
         Vector3 forward =         transform.parent.InverseTransformDirection(
             Vector3.ProjectOnPlane(transform.forward,          normal));
-        
+
+        // if (b)
+        // {
+        //     Debug.DrawRay(transform.position, Vector3.ProjectOnPlane(point - transform.position, normal), Color.blue);
+        //     Debug.DrawRay(transform.position, Vector3.ProjectOnPlane(transform.forward,          normal) * 5, Color.red);
+        // }
+
         // The step size is equal to speed times frame time.
         float singleStep = turningSpeed * Time.deltaTime;
 
@@ -65,14 +71,15 @@ public class TurretController : MonoBehaviour
 
         // Calculate a rotation a step closer to the target and applies rotation to this object
         transform.localRotation = Quaternion.LookRotation(newDirection);
+        // transform.localRotation.eulerAngles
     }
     
     public void PointAt(Vector3 point)
     {
         TurnOneThing(point, verticalMovingPart, turningSpeed, minVerticalTurnAngle,
-                     verticalMovingPart.right);
+                     verticalMovingPart.right/*, true*/);
 
         TurnOneThing(point, horisontalMovingPart, turningSpeed, minHorisontalTurnAngle,
-                     horisontalMovingPart.up);
+                     horisontalMovingPart.up/*, false*/);
     }
 }

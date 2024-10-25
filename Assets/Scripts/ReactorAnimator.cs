@@ -71,4 +71,6 @@ public class ReactorAnimator : MonoBehaviour
         //return Random.rotation;
         //Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f));
     }
+    
+    // 94, -84
 }
