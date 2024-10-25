@@ -8,7 +8,7 @@ https://github.com/0dminnimda/NTOGame/assets/52697657/a8ae4f58-8ba3-40db-a678-75
 
 ![2.gif](samples/2.gif)
 
-![early_snap.png](https://github.com/0dminnimda/NTOGame/blob/main/static/early_snap.png?raw=true)
+![early_snap.png](samples/early_snap.png)
 
 https://github.com/0dminnimda/NTOGame/assets/52697657/d9f1b6dc-5739-4722-97b6-bd77d654097c
 
